@@ -1,0 +1,94 @@
+@import url('https://fonts.bunny.net/css?family=electrolize:400|lato:400,700');
+
+@import 'tailwindcss' source(none);
+
+@source '../views';
+@source '../js/site.js';
+@source '../js/booking-widget.js';
+
+@theme {
+    --font-electrolize: 'Electrolize', ui-sans-serif, system-ui, sans-serif;
+    --font-lato: 'Lato', ui-sans-serif, system-ui, sans-serif;
+
+    --color-header: #f7f7f8;
+    --color-grey: #6b6b70;
+    --color-eccentric-blue: #0049fd;
+    --color-on-brand: #f5f5f5;
+
+    --color-booking-accent: #a44756;
+    --color-booking-border: #cfd6e5;
+    --color-booking-step-border: #edeff5;
+}
+
+/*
+ * Image hover effects: wrap an image or video in .image-hover to zoom it
+ * gently on hover/keyboard focus. Add .image-hover-subtle for large banner
+ * images and .image-hover-lift for clickable cards.
+ */
+.image-hover {
+    overflow: hidden;
+}
+
+.image-hover :is(img, video) {
+    transition:
+        transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+        filter 0.7s ease;
+}
+
+.image-hover:is(:hover, :focus-visible) :is(img, video) {
+    transform: scale(var(--image-hover-scale, 1.06));
+    filter: brightness(1.08);
+}
+
+.image-hover-subtle {
+    --image-hover-scale: 1.025;
+}
+
+.image-hover-lift {
+    transition:
+        transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+        box-shadow 0.4s ease;
+}
+
+.image-hover-lift:is(:hover, :focus-visible) {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px rgb(0 20 70 / 0.22);
+}
+
+/*
+ * Scroll reveal: elements marked [data-reveal] fade up as they enter the
+ * viewport. Only active once site.js adds .reveal-ready, so content stays
+ * visible without JavaScript. Children of [data-reveal-stagger] cascade.
+ */
+.reveal-ready [data-reveal] {
+    opacity: 0;
+    transform: translateY(40px);
+    transition:
+        opacity 0.8s ease,
+        transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.reveal-ready [data-reveal].is-revealed {
+    opacity: 1;
+    transform: none;
+}
+
+.reveal-ready [data-reveal-stagger] > [data-reveal]:nth-child(3n + 2) {
+    transition-delay: 0.12s;
+}
+
+.reveal-ready [data-reveal-stagger] > [data-reveal]:nth-child(3n + 3) {
+    transition-delay: 0.24s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .image-hover :is(img, video),
+    .image-hover-lift {
+        transition: none;
+    }
+
+    .image-hover:is(:hover, :focus-visible) :is(img, video),
+    .image-hover-lift:is(:hover, :focus-visible) {
+        transform: none;
+    }
+}
