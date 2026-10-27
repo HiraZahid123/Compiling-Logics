@@ -3,7 +3,7 @@
 @section('title', 'About — Compiling Logics')
 
 @section('content')
-    <div class="relative font-electrolize xl:mt-[min(49px,2.552vw)]">
+    <div class="relative font-electrolize">
         <section class="relative aspect-[1150/1176] overflow-hidden md:aspect-[1920/1176] xl:static xl:overflow-visible" aria-labelledby="about-heading">
             <img src="{{ asset('images/about/about-banner.jpg') }}" alt="" class="absolute top-0 left-0 h-[203.06%] w-auto max-w-none md:h-auto md:w-full" width="1920" height="2388">
             <h1 id="about-heading" class="sr-only">

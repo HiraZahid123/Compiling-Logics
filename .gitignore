@@ -22,3 +22,12 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+
+# AI assistant and editor tooling (local development only, not needed live)
+/.agents
+/.claude
+/.cursor
+/.mcp.json
+/AGENTS.md
+/CLAUDE.md
+/boost.json

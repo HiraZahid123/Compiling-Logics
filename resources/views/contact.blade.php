@@ -47,6 +47,15 @@
 
     <section class="px-4 pt-8 pb-16 sm:px-8 xl:px-[min(102px,5.313vw)] xl:pt-[min(10px,0.521vw)] xl:pb-[min(104px,5.417vw)]" aria-labelledby="booking-heading">
         <h2 id="booking-heading" class="sr-only">Book a call</h2>
-        <x-booking-widget :categories="$categories" />
+
+        @if ($calendlyUrl)
+            <div class="min-h-[700px] w-full" data-calendly-url="{{ $calendlyUrl }}">
+                <noscript>
+                    <a href="{{ $calendlyUrl }}" class="font-lato text-lg text-eccentric-blue underline">Book a call on Calendly</a>
+                </noscript>
+            </div>
+        @else
+            <x-booking-widget :categories="$categories" />
+        @endif
     </section>
 @endsection

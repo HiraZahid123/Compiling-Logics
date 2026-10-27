@@ -19,7 +19,9 @@ it('confirms a sent message', function () {
         ->assertSee('your message is on its way');
 });
 
-it('lists the bookable categories and services in the booking widget', function () {
+it('lists the bookable categories and services in the booking widget when calendly is not configured', function () {
+    config(['services.calendly.url' => null]);
+
     $category = ServiceCategory::factory()->create(['name' => 'Graphic Design']);
     $service = Service::factory()->for($category, 'category')->create(['name' => 'Graphics', 'duration_minutes' => 30]);
 
@@ -27,6 +29,16 @@ it('lists the bookable categories and services in the booking widget', function 
         ->assertOk()
         ->assertSeeInOrder(['Select Category', 'ALL', 'Graphic Design', 'Select Service', 'Graphics', 'Duration:', '30 m'])
         ->assertSee('data-service-option="'.$service->id.'" data-category="'.$category->id.'"', escape: false);
+});
+
+it('embeds calendly in the brand colour instead of the booking widget when configured', function () {
+    config(['services.calendly.url' => 'https://calendly.com/compiling-logics/30min']);
+    ServiceCategory::factory()->has(Service::factory())->create();
+
+    $this->get(route('contact'))
+        ->assertOk()
+        ->assertSee('data-calendly-url="https://calendly.com/compiling-logics/30min?hide_gdpr_banner=1&amp;primary_color=0049fd"', escape: false)
+        ->assertDontSee('data-booking-widget', escape: false);
 });
 
 it('marks contact as the current page in the navigation', function () {
