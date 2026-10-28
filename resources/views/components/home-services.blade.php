@@ -12,11 +12,18 @@
 <section class="relative px-4 pt-10 pb-16 font-electrolize sm:px-8 sm:pt-14 xl:px-[70px] xl:pt-[71px] xl:pb-[171px]" aria-labelledby="what-we-build-heading">
     <h2 id="what-we-build-heading" class="text-[32px] leading-[normal] text-black sm:text-[40px] xl:text-[48px]">What We Build</h2>
 
-    <a href="#" class="fixed right-4 bottom-4 z-30 block size-[60px] xl:absolute xl:top-[128px] xl:right-[134px] xl:bottom-auto" aria-label="Chat with us">
-        <svg class="size-full text-eccentric-blue" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <button
+        type="button"
+        data-chat-toggle
+        class="fixed right-4 bottom-4 z-30 block size-[60px] xl:absolute xl:top-[128px] xl:right-[134px] xl:bottom-auto cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-95 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-eccentric-blue group"
+        aria-label="Chat with AI Agent"
+        title="Chat with Compiling Logics AI Assistant"
+    >
+        <svg class="size-full text-eccentric-blue group-hover:text-blue-700 transition-colors drop-shadow-sm" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
         </svg>
-    </a>
+    </button>
+
 
     <div data-reveal-stagger class="mt-6 grid grid-cols-1 gap-5 sm:mt-10 sm:grid-cols-2 sm:gap-8 xl:mt-[72px] xl:grid-cols-3 xl:gap-x-[50px] xl:gap-y-[55px]">
         @foreach ($services as $service)

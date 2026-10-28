@@ -64,8 +64,12 @@
             @endforeach
         </div>
 
-        <p class="mx-auto mt-14 max-w-[554px] pb-16 text-center text-[22px] leading-[normal] text-black sm:text-[28px] xl:mt-[min(57px,2.969vw)] xl:max-w-[min(554px,28.854vw)] xl:pb-[min(295px,15.365vw)] xl:text-[length:min(36px,1.875vw)]">
+        <p class="mx-auto mt-14 max-w-[554px] text-center text-[22px] leading-[normal] text-black sm:text-[28px] xl:mt-[min(57px,2.969vw)] xl:max-w-[min(554px,28.854vw)] xl:text-[length:min(36px,1.875vw)]">
             Not sure which pillar fits? Start with a call. We'll scope it from there.
         </p>
+
+        <div class="mt-10 flex justify-center pb-16 xl:mt-[min(52px,2.708vw)] xl:pb-[min(295px,15.365vw)]">
+            <x-book-call-button size="large" href="/contact" />
+        </div>
     </section>
 @endsection

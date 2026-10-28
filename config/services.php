@@ -39,4 +39,8 @@ return [
         'url' => env('CALENDLY_URL'),
     ],
 
+    'whatsapp' => [
+        'number' => env('WHATSAPP_NUMBER', '+1234567890'),
+    ],
+
 ];

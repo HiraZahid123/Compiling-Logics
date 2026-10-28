@@ -1,4 +1,7 @@
 import './booking-widget';
+import { initAgenticChat } from './agentic-chat';
+
+initAgenticChat();
 
 const menuToggle = document.querySelector('[data-menu-toggle]');
 const menu = document.querySelector('[data-menu]');
@@ -126,3 +129,102 @@ if (lazyVideos.length > 0) {
 
     lazyVideos.forEach((video) => videoObserver.observe(video));
 }
+
+const caseStudyModal = document.querySelector('[data-case-study-modal]');
+
+if (caseStudyModal) {
+    const dialog = caseStudyModal.querySelector('[data-case-study-dialog]');
+    const titleEl = caseStudyModal.querySelector('[data-case-study-title]');
+    const frameEl = caseStudyModal.querySelector('[data-case-study-frame]');
+    const downloadEl = caseStudyModal.querySelector('[data-case-study-download]');
+    const fallbackEl = caseStudyModal.querySelector('[data-case-study-fallback]');
+    const closeBtn = caseStudyModal.querySelector('[data-case-study-close]');
+    let previousActiveElement = null;
+
+    const openModal = (projectName, pdfUrl) => {
+        previousActiveElement = document.activeElement;
+
+        if (titleEl) {
+            titleEl.textContent = `${projectName} — Case Study`;
+        }
+
+        if (frameEl) {
+            frameEl.src = pdfUrl;
+        }
+
+        if (downloadEl) {
+            downloadEl.href = pdfUrl;
+            downloadEl.setAttribute('download', `${projectName.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-case-study.pdf`);
+        }
+
+        if (fallbackEl) {
+            fallbackEl.href = pdfUrl;
+        }
+
+        caseStudyModal.classList.remove('hidden');
+        caseStudyModal.classList.add('flex');
+
+        // Force browser repaint to trigger CSS transitions
+        void caseStudyModal.offsetHeight;
+
+        caseStudyModal.classList.remove('opacity-0');
+        caseStudyModal.classList.add('opacity-100');
+
+        if (dialog) {
+            dialog.classList.remove('scale-95');
+            dialog.classList.add('scale-100');
+        }
+
+        document.body.classList.add('overflow-hidden');
+        closeBtn?.focus();
+    };
+
+    const closeModal = () => {
+        caseStudyModal.classList.remove('opacity-100');
+        caseStudyModal.classList.add('opacity-0');
+
+        if (dialog) {
+            dialog.classList.remove('scale-100');
+            dialog.classList.add('scale-95');
+        }
+
+        setTimeout(() => {
+            caseStudyModal.classList.remove('flex');
+            caseStudyModal.classList.add('hidden');
+            if (frameEl) {
+                frameEl.src = 'about:blank';
+            }
+            document.body.classList.remove('overflow-hidden');
+
+            if (previousActiveElement && typeof previousActiveElement.focus === 'function') {
+                previousActiveElement.focus();
+            }
+        }, 200);
+    };
+
+    document.addEventListener('click', (event) => {
+        const trigger = event.target.closest('[data-case-study-trigger]');
+
+        if (trigger) {
+            event.preventDefault();
+            const { projectName, pdfUrl } = trigger.dataset;
+            if (pdfUrl) {
+                openModal(projectName || 'Project', pdfUrl);
+            }
+            return;
+        }
+
+        if (event.target === caseStudyModal) {
+            closeModal();
+        }
+    });
+
+    closeBtn?.addEventListener('click', closeModal);
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !caseStudyModal.classList.contains('hidden')) {
+            closeModal();
+        }
+    });
+}
+

@@ -8,6 +8,6 @@
     ][$size];
 @endphp
 
-<a {{ $attributes->merge(['href' => '#', 'class' => "flex {$sizeClasses} items-center justify-center rounded-[1px] bg-eccentric-blue font-electrolize leading-none whitespace-nowrap text-on-brand"]) }}>
+<a {{ $attributes->merge(['href' => '/contact', 'class' => "flex {$sizeClasses} items-center justify-center rounded-[1px] bg-eccentric-blue font-electrolize leading-none whitespace-nowrap text-on-brand"]) }}>
     Book a Call
 </a>

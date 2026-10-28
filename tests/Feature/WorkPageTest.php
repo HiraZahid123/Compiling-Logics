@@ -38,3 +38,13 @@ it('starts with all filters selected', function () {
         ->and($html)->toMatch('/aria-pressed="true" data-filter-group="type" data-filter-value="all"/')
         ->and($html)->toMatch('/aria-pressed="true" data-filter-group="industry" data-filter-value="all"/');
 });
+
+it('links each project to its case study pdf and renders the viewer modal', function () {
+    $this->get(route('work'))
+        ->assertOk()
+        ->assertSee('data-case-study-modal', escape: false)
+        ->assertSee('data-case-study-frame', escape: false)
+        ->assertSee('data-pdf-url="'.asset('case-studies/best-local-law.pdf').'"', escape: false)
+        ->assertSee('data-pdf-url="'.asset('case-studies/tutor-hub.pdf').'"', escape: false)
+        ->assertSee('Read Case Study (PDF)', escape: false);
+});
