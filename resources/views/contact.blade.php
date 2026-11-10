@@ -45,17 +45,22 @@
         </form>
     </section>
 
-    <section class="px-4 pt-8 pb-16 sm:px-8 xl:px-[min(102px,5.313vw)] xl:pt-[min(10px,0.521vw)] xl:pb-[min(104px,5.417vw)]" aria-labelledby="booking-heading">
+    <section @class(['pb-16 xl:pb-[min(104px,5.417vw)]', 'pt-8 xl:pt-[min(10px,0.521vw)]' => ! $calendlyUrl]) aria-labelledby="booking-heading">
         <h2 id="booking-heading" class="sr-only">Book a call</h2>
 
         @if ($calendlyUrl)
-            <div class="min-h-[700px] w-full" data-calendly-url="{{ $calendlyUrl }}">
-                <noscript>
-                    <a href="{{ $calendlyUrl }}" class="font-lato text-lg text-eccentric-blue underline">Book a call on Calendly</a>
-                </noscript>
+            <div class="bg-header px-4 py-10 sm:px-8 xl:py-[min(64px,3.333vw)]">
+                <div class="min-h-[700px] w-full" data-calendly-url="{{ $calendlyUrl }}">
+                    <noscript>
+                        <a href="{{ $calendlyUrl }}" class="font-lato text-lg text-eccentric-blue underline">Book a call on Calendly</a>
+                    </noscript>
+                </div>
             </div>
         @else
-            <x-booking-widget :categories="$categories" />
+            <div class="px-4 sm:px-8 xl:px-[min(102px,5.313vw)]">
+                <x-booking-widget :categories="$categories" />
+            </div>
         @endif
     </section>
 @endsection
+

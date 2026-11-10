@@ -93,7 +93,11 @@ if (calendlyContainer) {
             script.src = 'https://assets.calendly.com/assets/external/widget.js';
             script.async = true;
             script.addEventListener('load', () => {
-                window.Calendly.initInlineWidget({ url: calendlyContainer.dataset.calendlyUrl, parentElement: calendlyContainer, resize: true });
+                window.Calendly.initInlineWidget({
+                    url: calendlyContainer.dataset.calendlyUrl,
+                    parentElement: calendlyContainer,
+                    resize: true,
+                });
             });
             document.head.append(script);
         },

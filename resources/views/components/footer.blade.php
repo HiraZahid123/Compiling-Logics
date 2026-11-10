@@ -1,9 +1,7 @@
 @php
     $socialLinks = [
-        ['label' => 'Instagram', 'url' => '#'],
-        ['label' => 'LinkedIn', 'url' => '#'],
-        ['label' => 'X', 'url' => '#'],
-        ['label' => 'Facebook', 'url' => '#'],
+        ['label' => 'LinkedIn', 'url' => 'https://www.linkedin.com/company/compiling-logics/'],
+        ['label' => 'Facebook', 'url' => 'https://www.facebook.com/compiling.logics'],
     ];
 
     $legalLinks = [
@@ -15,7 +13,7 @@
 <footer class="flex flex-col gap-4 px-4 pb-24 font-electrolize text-base leading-6 text-grey sm:px-8 xl:flex-row xl:items-center xl:justify-between xl:px-[70px] xl:pb-[32px] xl:text-[length:clamp(16px,1.25vw,24px)]">
     <nav class="flex flex-wrap gap-x-6 gap-y-2 xl:gap-x-[clamp(20px,1.5625vw,30px)]" aria-label="Social">
         @foreach ($socialLinks as $link)
-            <a href="{{ $link['url'] }}">{{ $link['label'] }}</a>
+            <a href="{{ $link['url'] }}" target="_blank" rel="noopener noreferrer">{{ $link['label'] }}</a>
         @endforeach
     </nav>
 
