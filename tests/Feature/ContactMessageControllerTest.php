@@ -2,14 +2,16 @@
 
 use App\Mail\ContactMessageReceived;
 use App\Models\ContactMessage;
+use Illuminate\Support\Facades\Exceptions;
 use Illuminate\Support\Facades\Mail;
+use Symfony\Component\Mailer\Exception\TransportException;
 
 beforeEach(function () {
     Mail::fake();
     config(['mail.contact_recipient' => 'team@compilinglogics.test']);
 });
 
-it('stores the message and emails it to the team', function () {
+it('stores the message and emails it to the team immediately', function () {
     $this->post(route('contact.store'), [
         'name' => 'Ada Lovelace',
         'email' => 'ada@example.com',
@@ -26,7 +28,8 @@ it('stores the message and emails it to the team', function () {
         'message' => 'We need a booking system for our clinic.',
     ]);
 
-    Mail::assertQueued(
+    Mail::assertNothingQueued();
+    Mail::assertSent(
         ContactMessageReceived::class,
         fn (ContactMessageReceived $mail): bool => $mail->hasTo('team@compilinglogics.test')
             && $mail->contactMessage->is($contactMessage),
@@ -44,7 +47,7 @@ it('rejects an empty submission without storing or emailing anything', function 
         ]);
 
     expect(ContactMessage::count())->toBe(0);
-    Mail::assertNothingQueued();
+    Mail::assertNothingSent();
 });
 
 it('rejects an invalid email address', function () {
@@ -89,4 +92,16 @@ it('rejects an unknown return destination', function () {
     ])->assertSessionHasErrors('return_to');
 
     expect(ContactMessage::count())->toBe(0);
+});
+
+it('keeps the message and still thanks the visitor when the mail server is down', function () {
+    Exceptions::fake();
+    Mail::shouldReceive('to')->andThrow(new TransportException('Connection could not be established'));
+
+    $this->post(route('contact.store'), ContactMessage::factory()->raw())
+        ->assertRedirect(route('contact'))
+        ->assertSessionHas('status', 'contact-message-sent');
+
+    expect(ContactMessage::count())->toBe(1);
+    Exceptions::assertReported(TransportException::class);
 });

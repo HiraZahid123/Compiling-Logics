@@ -123,6 +123,6 @@ return [
     |
     */
 
-    'contact_recipient' => env('MAIL_CONTACT_RECIPIENT', env('MAIL_FROM_ADDRESS', 'hello@example.com')),
+    'contact_recipient' => env('MAIL_CONTACT_RECIPIENT') ?: env('MAIL_FROM_ADDRESS', 'hello@example.com'),
 
 ];
