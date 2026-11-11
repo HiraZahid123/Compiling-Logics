@@ -107,6 +107,54 @@ if (calendlyContainer) {
     calendlyObserver.observe(calendlyContainer);
 }
 
+const scrollProgress = document.querySelector('[data-scroll-progress]');
+
+if (scrollProgress) {
+    const updateScrollProgress = () => {
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+
+        scrollProgress.style.setProperty('--scroll-progress', String(scrollable > 0 ? window.scrollY / scrollable : 0));
+    };
+
+    window.addEventListener('scroll', updateScrollProgress, { passive: true });
+    updateScrollProgress();
+}
+
+const pillarChips = document.querySelectorAll('[data-pillar-chip]');
+
+if (pillarChips.length > 0) {
+    const pillarObserver = new IntersectionObserver(
+        (entries) => {
+            entries
+                .filter(({ isIntersecting }) => isIntersecting)
+                .forEach(({ target }) => {
+                    pillarChips.forEach((chip) => {
+                        const isActive = chip.dataset.pillarChip === target.id;
+
+                        chip.toggleAttribute('data-active', isActive);
+
+                        if (isActive) {
+                            chip.scrollIntoView({ block: 'nearest', inline: 'center' });
+                        }
+                    });
+                });
+        },
+        { rootMargin: '-45% 0px -50% 0px' },
+    );
+
+    document.querySelectorAll('[data-pillar-section]').forEach((section) => pillarObserver.observe(section));
+}
+
+document.querySelectorAll('[data-pick-pillar]').forEach((link) => {
+    link.addEventListener('click', () => {
+        document.querySelectorAll('[data-pillar-pick]').forEach((checkbox) => {
+            if (checkbox.value === link.dataset.pickPillar) {
+                checkbox.checked = true;
+            }
+        });
+    });
+});
+
 const lazyVideos = document.querySelectorAll('[data-lazy-video]');
 
 if (lazyVideos.length > 0) {

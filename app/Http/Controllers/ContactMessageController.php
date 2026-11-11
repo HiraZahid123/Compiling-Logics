@@ -15,10 +15,17 @@ class ContactMessageController extends Controller
      */
     public function store(StoreContactMessageRequest $request): RedirectResponse
     {
-        $contactMessage = ContactMessage::create($request->validated());
+        $contactMessage = ContactMessage::create([
+            ...$request->safe()->only(['name', 'email']),
+            'message' => $request->messageWithPillars(),
+        ]);
 
         Mail::to(config('mail.contact_recipient'))->send(new ContactMessageReceived($contactMessage));
 
-        return to_route('contact')->with('status', 'contact-message-sent');
+        $redirect = $request->input('return_to') === 'services'
+            ? to_route('services')->withFragment('contact')
+            : to_route('contact');
+
+        return $redirect->with('status', 'contact-message-sent');
     }
 }

@@ -181,7 +181,54 @@
                 'highlight' => 'transparent review scores',
             ],
         ],
+        [
+            'name' => 'DropPR.ai',
+            'category' => 'SaaS',
+            'index' => '12',
+            'image' => 'droppr-ai.jpg',
+            'pdf' => 'droppr-ai.pdf',
+            'tags' => ['AI', 'PR Automation', 'Media'],
+            'types' => ['ai-agents', 'web-app'],
+            'industries' => [],
+            'description' => [
+                'text' => 'An AI-powered PR automation platform that turns a video, voice note or photo into a publication-ready, SEO-optimized press release, then distributes it to 1,500+ sites.',
+                'highlight' => 'AI-powered PR automation',
+            ],
+        ],
+        [
+            'name' => 'ForCoach',
+            'category' => 'SaaS',
+            'index' => '13',
+            'image' => 'forcoach.jpg',
+            'pdf' => 'forcoach.pdf',
+            'tags' => ['SaaS', 'Scheduling', 'Invoicing'],
+            'types' => ['web-app'],
+            'industries' => [],
+            'description' => [
+                'text' => 'An operating system for instructors teaching across multiple studios: it tracks classes at every studio, calculates earnings automatically and generates professional invoices.',
+                'highlight' => 'calculates earnings automatically',
+            ],
+        ],
+        [
+            'name' => 'Novartis Tech Café',
+            'category' => 'Event SaaS',
+            'index' => '14',
+            'image' => 'novartis-tech-cafe.jpg',
+            'pdf' => 'novartis-tech-cafe.pdf',
+            'tags' => ['Events', 'QR Check-in', 'Laravel'],
+            'types' => ['web-app', 'design'],
+            'industries' => ['healthcare'],
+            'description' => [
+                'text' => 'A real-time event management platform for high-traffic live events, with QR check-ins, role-based dashboards for admins and moderators, and instant activity tracking.',
+                'highlight' => 'QR check-ins',
+            ],
+        ],
     ];
+
+    $projects = array_map(
+        fn (array $project): array => [...$project, 'has_case_study' => is_file(public_path('case-studies/'.$project['pdf']))],
+        $projects,
+    );
 
     $highlight = fn (array $description): string => str_replace(
         e($description['highlight']),
@@ -211,7 +258,7 @@
                     </h1>
 
                     <p class="text-base sm:text-lg text-black/75 max-w-lg leading-relaxed mb-8">
-                        Eleven builds across law, healthcare, hospitality, education and industry. Every deliverable engineered, not guessed.
+                        {{ count($projects) }} builds across law, healthcare, hospitality, education and industry. Every deliverable engineered, not guessed.
                     </p>
 
                     <div class="flex flex-wrap items-center gap-4">
@@ -262,7 +309,7 @@
                             <p class="flex items-baseline flex-wrap gap-2.5 mb-2.5">
                                 <span class="opacity-60">resolving projects</span>
                                 <span class="flex-1 border-b border-dotted border-white/35 min-w-[20px] -translate-y-1"></span>
-                                <span class="bg-white text-black px-2 py-0.5 text-xs tracking-wider font-semibold">11</span>
+                                <span class="bg-white text-black px-2 py-0.5 text-xs tracking-wider font-semibold">{{ count($projects) }}</span>
                             </p>
 
                             <p class="flex items-baseline flex-wrap gap-2.5 mb-2.5">
@@ -298,7 +345,7 @@
             {{-- Stats Row: 4 Modular Cells with Blue Corner Accents --}}
             <div class="mt-14 sm:mt-18 border-t border-black border-l border-black/15 bg-white grid grid-cols-2 lg:grid-cols-4">
                 <div class="stat-accent p-6 border-r border-b border-black/15">
-                    <span class="block text-3xl sm:text-4xl leading-tight mb-1.5 text-black">11</span>
+                    <span class="block text-3xl sm:text-4xl leading-tight mb-1.5 text-black">{{ count($projects) }}</span>
                     <span class="text-[11px] leading-tight tracking-[0.15em] uppercase text-grey">Featured builds</span>
                 </div>
                 <div class="stat-accent p-6 border-r border-b border-black/15">
@@ -384,18 +431,20 @@
                         </span>
 
                         {{-- Modal Arrow Trigger Top-Right --}}
-                        <button
-                            type="button"
-                            class="absolute right-0 top-0 size-9 grid place-items-center bg-white text-black border-l border-b border-black transition-colors duration-300 group-hover:bg-black group-hover:text-white z-10 cursor-pointer"
-                            data-case-study-trigger
-                            data-project-name="{{ $project['name'] }}"
-                            data-pdf-url="{{ asset('case-studies/'.$project['pdf']) }}"
-                            aria-label="Open case study for {{ $project['name'] }}"
-                        >
-                            <svg class="size-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
-                                <path d="M6 18 18 6M8 6h10v10"/>
-                            </svg>
-                        </button>
+                        @if ($project['has_case_study'])
+                            <button
+                                type="button"
+                                class="absolute right-0 top-0 size-9 grid place-items-center bg-white text-black border-l border-b border-black transition-colors duration-300 group-hover:bg-black group-hover:text-white z-10 cursor-pointer"
+                                data-case-study-trigger
+                                data-project-name="{{ $project['name'] }}"
+                                data-pdf-url="{{ asset('case-studies/'.$project['pdf']) }}"
+                                aria-label="Open case study for {{ $project['name'] }}"
+                            >
+                                <svg class="size-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+                                    <path d="M6 18 18 6M8 6h10v10"/>
+                                </svg>
+                            </button>
+                        @endif
                     </div>
 
                     {{-- Card Body --}}
@@ -422,20 +471,26 @@
                         </ul>
 
                         {{-- View Case Study Button --}}
-                        <button
-                            type="button"
-                            class="w-full py-3 px-5 text-sm font-normal tracking-wide bg-white text-black border border-black hover:bg-eccentric-blue hover:text-white hover:border-eccentric-blue transition-colors duration-200 inline-flex items-center justify-center gap-2.5 cursor-pointer"
-                            data-case-study-trigger
-                            data-project-name="{{ $project['name'] }}"
-                            data-pdf-url="{{ asset('case-studies/'.$project['pdf']) }}"
-                            aria-label="Read Case Study (PDF) for {{ $project['name'] }}"
-                        >
-                            <span>View Case Study</span>
-                            <span class="sr-only">Read Case Study (PDF)</span>
-                            <svg class="size-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
-                                <path d="M6 18 18 6M8 6h10v10"/>
-                            </svg>
-                        </button>
+                        @if ($project['has_case_study'])
+                            <button
+                                type="button"
+                                class="w-full py-3 px-5 text-sm font-normal tracking-wide bg-white text-black border border-black hover:bg-eccentric-blue hover:text-white hover:border-eccentric-blue transition-colors duration-200 inline-flex items-center justify-center gap-2.5 cursor-pointer"
+                                data-case-study-trigger
+                                data-project-name="{{ $project['name'] }}"
+                                data-pdf-url="{{ asset('case-studies/'.$project['pdf']) }}"
+                                aria-label="Read Case Study (PDF) for {{ $project['name'] }}"
+                            >
+                                <span>View Case Study</span>
+                                <span class="sr-only">Read Case Study (PDF)</span>
+                                <svg class="size-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+                                    <path d="M6 18 18 6M8 6h10v10"/>
+                                </svg>
+                            </button>
+                        @else
+                            <span class="w-full py-3 px-5 text-sm tracking-wide text-black/50 border border-dashed border-black/30 inline-flex items-center justify-center">
+                                Case study coming soon
+                            </span>
+                        @endif
                     </div>
                 </article>
             @endforeach
@@ -450,7 +505,7 @@
             >
                 <div class="relative z-10 flex flex-col h-full">
                     <p class="text-[11px] leading-tight tracking-[0.15em] uppercase text-black/70 mb-5">
-                        Next build <span class="text-eccentric-blue mx-1">/</span> 12
+                        Next build <span class="text-eccentric-blue mx-1">/</span> {{ count($projects) + 1 }}
                     </p>
 
                     <h3 class="text-3xl sm:text-4xl leading-tight text-black mb-4 font-normal">

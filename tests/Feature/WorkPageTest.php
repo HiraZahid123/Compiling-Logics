@@ -35,8 +35,8 @@ it('starts with all filters selected', function () {
     $html = $this->get(route('work'))->getContent();
 
     expect(substr_count($html, 'aria-pressed="true"'))->toBe(2)
-        ->and($html)->toMatch('/aria-pressed="true" data-filter-group="type" data-filter-value="all"/')
-        ->and($html)->toMatch('/aria-pressed="true" data-filter-group="industry" data-filter-value="all"/');
+        ->and($html)->toMatch('/aria-pressed="true"\s+data-filter-group="type"\s+data-filter-value="all"/')
+        ->and($html)->toMatch('/aria-pressed="true"\s+data-filter-group="industry"\s+data-filter-value="all"/');
 });
 
 it('links each project to its case study pdf and renders the viewer modal', function () {
@@ -48,3 +48,15 @@ it('links each project to its case study pdf and renders the viewer modal', func
         ->assertSee('data-pdf-url="'.asset('case-studies/tutor-hub.pdf').'"', escape: false)
         ->assertSee('Read Case Study (PDF)', escape: false);
 });
+
+it('lists DropPR.ai, ForCoach and Novartis Tech Café after the original projects', function () {
+    $this->get(route('work'))
+        ->assertSeeInOrder(['alt="Tutor Hub"', 'alt="DropPR.ai"', 'alt="ForCoach"', 'alt="Novartis Tech Café"'], escape: false);
+});
+
+it('links the newly added projects to their case study pdfs', function (string $pdf) {
+    expect(public_path('case-studies/'.$pdf))->toBeFile();
+
+    $this->get(route('work'))
+        ->assertSee('data-pdf-url="'.asset('case-studies/'.$pdf).'"', escape: false);
+})->with(['droppr-ai.pdf', 'forcoach.pdf', 'novartis-tech-cafe.pdf']);

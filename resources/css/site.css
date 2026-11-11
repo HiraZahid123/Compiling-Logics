@@ -168,3 +168,96 @@
 
 
 
+
+/*
+ * Services page: details from the services design that Tailwind utilities
+ * can't express cleanly (pseudo-element bars, outlined numerals, masked grid).
+ */
+.services-progress {
+    position: fixed;
+    inset: 0 auto auto 0;
+    z-index: 50;
+    height: 4px;
+    width: 100%;
+    background: var(--color-eccentric-blue);
+    transform: scaleX(var(--scroll-progress, 0));
+    transform-origin: left;
+}
+
+.services-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgb(0 0 0 / 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(0 0 0 / 0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: linear-gradient(to bottom, #000 50%, transparent);
+}
+
+.services-pillar-cell::before {
+    content: '';
+    position: absolute;
+    left: -1px;
+    top: -1px;
+    width: 0;
+    height: 4px;
+    background: var(--color-eccentric-blue);
+    transition: width 0.3s;
+}
+
+.services-pillar-cell:hover::before {
+    width: 56px;
+}
+
+.services-chip::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 4px;
+    background: var(--color-eccentric-blue);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+}
+
+.services-chip[data-active]::after {
+    transform: scaleX(1);
+}
+
+.services-big-number {
+    color: transparent;
+    -webkit-text-stroke: 1.5px #000;
+}
+
+.services-shot video {
+    transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+[data-pillar-section]:hover .services-shot video {
+    transform: scale(1.04);
+}
+
+.reveal-ready [data-reveal] .services-shot video {
+    clip-path: inset(0 100% 0 0);
+    transition:
+        clip-path 1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s,
+        transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.reveal-ready [data-reveal].is-revealed .services-shot video {
+    clip-path: inset(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .services-progress {
+        display: none;
+    }
+
+    .services-shot video {
+        transition: none;
+    }
+}

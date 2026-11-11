@@ -68,3 +68,25 @@ it('returns 429 after five submissions in a minute', function () {
 
     expect(ContactMessage::count())->toBe(5);
 });
+
+it('records the picked pillars and returns to the services contact section', function () {
+    $this->post(route('contact.store'), [
+        'name' => 'Ada Lovelace',
+        'email' => 'ada@example.com',
+        'message' => 'We need a booking system.',
+        'pillars' => ['Software Development', 'Design'],
+        'return_to' => 'services',
+    ])->assertRedirect(route('services').'#contact');
+
+    expect(ContactMessage::sole()->message)
+        ->toBe("Pillars of interest: Software Development, Design\n\nWe need a booking system.");
+});
+
+it('rejects an unknown return destination', function () {
+    $this->post(route('contact.store'), [
+        ...ContactMessage::factory()->raw(),
+        'return_to' => 'https://example.com',
+    ])->assertSessionHasErrors('return_to');
+
+    expect(ContactMessage::count())->toBe(0);
+});

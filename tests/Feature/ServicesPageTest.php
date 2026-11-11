@@ -27,3 +27,17 @@ it('marks services as the current page in the navigation', function () {
     expect($this->get(route('services'))->getContent())->toMatch($currentServicesLink)
         ->and($this->get(route('home'))->getContent())->not->toMatch($currentServicesLink);
 });
+
+it('renders a contact form that picks pillars and returns to the services page', function () {
+    $html = $this->get(route('services'))->assertOk()->getContent();
+
+    expect($html)->toContain('action="'.route('contact.store').'"')
+        ->toContain('name="return_to" value="services"')
+        ->and(substr_count($html, 'name="pillars[]"'))->toBe(6);
+});
+
+it('confirms a request sent from the services page', function () {
+    $this->withSession(['status' => 'contact-message-sent'])
+        ->get(route('services'))
+        ->assertSee('Your request is in.');
+});
