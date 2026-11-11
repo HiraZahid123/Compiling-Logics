@@ -225,8 +225,15 @@
         ],
     ];
 
+    $versionedAsset = fn (string $path): string => asset($path).'?v='.(is_file(public_path($path)) ? filemtime(public_path($path)) : 0);
+
     $projects = array_map(
-        fn (array $project): array => [...$project, 'has_case_study' => is_file(public_path('case-studies/'.$project['pdf']))],
+        fn (array $project): array => [
+            ...$project,
+            'has_case_study' => is_file(public_path('case-studies/'.$project['pdf'])),
+            'image_url' => $versionedAsset('images/work/'.$project['image']),
+            'pdf_url' => $versionedAsset('case-studies/'.$project['pdf']),
+        ],
         $projects,
     );
 
@@ -414,7 +421,7 @@
                     {{-- Media container with 2.1:1 aspect ratio --}}
                     <div class="relative aspect-[2.1/1] overflow-hidden bg-neutral-100 border-b border-black">
                         <img
-                            src="{{ asset('images/work/'.$project['image']) }}"
+                            src="{{ $project['image_url'] }}"
                             alt="{{ $project['name'] }}"
                             class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
                             loading="lazy"
@@ -437,7 +444,7 @@
                                 class="absolute right-0 top-0 size-9 grid place-items-center bg-white text-black border-l border-b border-black transition-colors duration-300 group-hover:bg-black group-hover:text-white z-10 cursor-pointer"
                                 data-case-study-trigger
                                 data-project-name="{{ $project['name'] }}"
-                                data-pdf-url="{{ asset('case-studies/'.$project['pdf']) }}"
+                                data-pdf-url="{{ $project['pdf_url'] }}"
                                 aria-label="Open case study for {{ $project['name'] }}"
                             >
                                 <svg class="size-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
@@ -477,7 +484,7 @@
                                 class="w-full py-3 px-5 text-sm font-normal tracking-wide bg-white text-black border border-black hover:bg-eccentric-blue hover:text-white hover:border-eccentric-blue transition-colors duration-200 inline-flex items-center justify-center gap-2.5 cursor-pointer"
                                 data-case-study-trigger
                                 data-project-name="{{ $project['name'] }}"
-                                data-pdf-url="{{ asset('case-studies/'.$project['pdf']) }}"
+                                data-pdf-url="{{ $project['pdf_url'] }}"
                                 aria-label="Read Case Study (PDF) for {{ $project['name'] }}"
                             >
                                 <span>View Case Study</span>

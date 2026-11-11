@@ -44,8 +44,8 @@ it('links each project to its case study pdf and renders the viewer modal', func
         ->assertOk()
         ->assertSee('data-case-study-modal', escape: false)
         ->assertSee('data-case-study-frame', escape: false)
-        ->assertSee('data-pdf-url="'.asset('case-studies/best-local-law.pdf').'"', escape: false)
-        ->assertSee('data-pdf-url="'.asset('case-studies/tutor-hub.pdf').'"', escape: false)
+        ->assertSee('data-pdf-url="'.asset('case-studies/best-local-law.pdf').'?v=', escape: false)
+        ->assertSee('data-pdf-url="'.asset('case-studies/tutor-hub.pdf').'?v=', escape: false)
         ->assertSee('Read Case Study (PDF)', escape: false);
 });
 
@@ -58,5 +58,12 @@ it('links the newly added projects to their case study pdfs', function (string $
     expect(public_path('case-studies/'.$pdf))->toBeFile();
 
     $this->get(route('work'))
-        ->assertSee('data-pdf-url="'.asset('case-studies/'.$pdf).'"', escape: false);
+        ->assertSee('data-pdf-url="'.asset('case-studies/'.$pdf).'?v=', escape: false);
 })->with(['droppr-ai.pdf', 'forcoach.pdf', 'novartis-tech-cafe.pdf']);
+
+it('versions work images by modification time so replaced files bypass caches', function () {
+    $version = filemtime(public_path('images/work/kids-health-club.jpg'));
+
+    $this->get(route('work'))
+        ->assertSee('src="'.asset('images/work/kids-health-club.jpg').'?v='.$version.'"', escape: false);
+});
