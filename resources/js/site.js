@@ -169,6 +169,111 @@ if (recaptchaOverlay) {
     fitRecaptcha();
 }
 
+const sentPopup = document.querySelector('[data-sent-popup]');
+
+if (sentPopup) {
+    const closeButton = sentPopup.querySelector('[data-sent-popup-close]');
+
+    const closeSentPopup = () => {
+        sentPopup.remove();
+        document.removeEventListener('keydown', closeOnEscape);
+    };
+
+    const closeOnEscape = (event) => {
+        if (event.key === 'Escape') {
+            closeSentPopup();
+        }
+    };
+
+    closeButton.addEventListener('click', closeSentPopup);
+    sentPopup.addEventListener('click', (event) => {
+        if (event.target === sentPopup) {
+            closeSentPopup();
+        }
+    });
+    document.addEventListener('keydown', closeOnEscape);
+    closeButton.focus();
+}
+
+const testimonials = document.querySelector('[data-testimonials]');
+
+if (testimonials) {
+    const filters = testimonials.querySelectorAll('[data-testimonial-filter]');
+    const items = testimonials.querySelectorAll('[data-testimonial-type]');
+
+    filters.forEach((filter) => {
+        filter.addEventListener('click', () => {
+            const value = filter.dataset.testimonialFilter;
+
+            filters.forEach((option) => option.setAttribute('aria-pressed', String(option === filter)));
+            items.forEach((item) => {
+                const isShown = value === 'all' || item.dataset.testimonialType === value;
+
+                item.hidden = !isShown;
+                item.classList.remove('is-filtered-in');
+
+                if (isShown) {
+                    void item.offsetWidth;
+                    item.classList.add('is-filtered-in', 'is-revealed');
+                }
+            });
+        });
+    });
+
+    const modal = testimonials.querySelector('[data-testimonial-modal]');
+    const stage = modal.querySelector('[data-testimonial-stage]');
+    const caption = modal.querySelector('[data-testimonial-caption]');
+
+    const closeModal = () => {
+        modal.classList.replace('flex', 'hidden');
+        stage.replaceChildren();
+    };
+
+    const playerFor = (url) => {
+        if (/\.(mp4|webm)(\?|$)/i.test(url)) {
+            const video = Object.assign(document.createElement('video'), { src: url, controls: true, autoplay: true, playsInline: true });
+            video.className = 'size-full';
+
+            return video;
+        }
+
+        if (/^https:\/\//i.test(url)) {
+            const frame = Object.assign(document.createElement('iframe'), {
+                src: `${url}${url.includes('?') ? '&' : '?'}autoplay=1`,
+                title: 'Video testimonial',
+                allow: 'autoplay; encrypted-media; fullscreen',
+                allowFullscreen: true,
+            });
+            frame.className = 'size-full border-0';
+
+            return frame;
+        }
+
+        return Object.assign(document.createElement('p'), { textContent: 'This client video will appear here once its link is added.', className: 'px-6' });
+    };
+
+    testimonials.querySelectorAll('[data-testimonial-video]').forEach((poster) => {
+        poster.addEventListener('click', () => {
+            caption.textContent = poster.dataset.testimonialTitle;
+            stage.replaceChildren(playerFor(poster.dataset.testimonialVideo));
+            modal.classList.replace('hidden', 'flex');
+            modal.querySelector('[data-testimonial-close]').focus();
+        });
+    });
+
+    modal.querySelector('[data-testimonial-close]').addEventListener('click', closeModal);
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && modal.classList.contains('flex')) {
+            closeModal();
+        }
+    });
+}
+
 const lazyVideos = document.querySelectorAll('[data-lazy-video]');
 
 if (lazyVideos.length > 0) {

@@ -22,5 +22,7 @@
         <x-footer />
 
         <x-agentic-chat />
+
+        <x-message-sent-popup />
     </body>
 </html>

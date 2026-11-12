@@ -34,7 +34,7 @@ it('tags each project with the filters it belongs to', function () {
 it('starts with all filters selected', function () {
     $html = $this->get(route('work'))->getContent();
 
-    expect(substr_count($html, 'aria-pressed="true"'))->toBe(2)
+    expect(preg_match_all('/aria-pressed="true"\s+data-filter-group=/', $html))->toBe(2)
         ->and($html)->toMatch('/aria-pressed="true"\s+data-filter-group="type"\s+data-filter-value="all"/')
         ->and($html)->toMatch('/aria-pressed="true"\s+data-filter-group="industry"\s+data-filter-value="all"/');
 });
@@ -74,4 +74,13 @@ it('posts the project form to the contact handler and returns to it', function (
     expect($html)->toMatch('/<form action="'.preg_quote(route('contact.store'), '/').'" method="POST"/')
         ->toContain('name="return_to" value="work"')
         ->not->toContain('method="GET"');
+});
+
+it('shows the client testimonials section with video and written filters', function () {
+    $html = $this->get(route('work'))->assertSee('What clients say.')->getContent();
+
+    expect(substr_count($html, 'data-testimonial-filter='))->toBe(3)
+        ->and(substr_count($html, 'data-testimonial-type="video"'))->toBe(2)
+        ->and(substr_count($html, 'data-testimonial-type="written"'))->toBe(3)
+        ->and($html)->toContain('data-testimonial-modal');
 });

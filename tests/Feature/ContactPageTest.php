@@ -57,3 +57,14 @@ it('shows the reCAPTCHA checkbox on every contact form only when a site key is s
     config(['services.recaptcha.site_key' => null]);
     $this->get(route($routeName))->assertDontSee('g-recaptcha', escape: false);
 })->with(['contact', 'services', 'work']);
+
+it('shows the message sent popup after a successful submission on every form page', function (string $routeName) {
+    $this->withSession(['status' => 'contact-message-sent'])
+        ->get(route($routeName))
+        ->assertSee('data-sent-popup', escape: false)
+        ->assertSee('Message sent successfully');
+})->with(['contact', 'services', 'work']);
+
+it('does not show the message sent popup on a normal visit', function (string $routeName) {
+    $this->get(route($routeName))->assertDontSee('data-sent-popup', escape: false);
+})->with(['contact', 'services', 'work']);

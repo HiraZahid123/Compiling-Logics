@@ -261,3 +261,37 @@
         transition: none;
     }
 }
+
+/*
+ * Work page testimonials: placeholder video poster grid and the fade-in
+ * used when the All / Video / Written filter changes.
+ */
+.testimonial-poster {
+    background-color: #f4f4f4;
+    background-image:
+        linear-gradient(rgb(0 0 0 / 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(0 0 0 / 0.07) 1px, transparent 1px);
+    background-size: 48px 48px;
+}
+
+.testimonial-item.is-filtered-in {
+    animation: testimonial-in 0.45s both;
+}
+
+@keyframes testimonial-in {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .testimonial-item.is-filtered-in {
+        animation: none;
+    }
+}

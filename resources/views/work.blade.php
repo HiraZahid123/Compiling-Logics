@@ -546,6 +546,8 @@
     <x-case-study-modal />
 
     {{-- ============ PROCESS BAND (FROM STANDALONE HTML) ============ --}}
+    <x-work-testimonials />
+
     <section class="bg-black text-white py-20 sm:py-24 font-electrolize">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <span class="block w-18 h-1 bg-eccentric-blue mb-6"></span>
@@ -770,7 +772,7 @@
                             </div>
 
                             @if (session('status') === 'contact-message-sent')
-                                <p class="border-l-4 border-eccentric-blue bg-neutral-100 px-3.5 py-3 text-sm" role="status">Thank you. Your project details are in. We'll be in touch shortly.</p>
+                                <p class="border-l-4 border-black bg-eccentric-blue px-3.5 py-3 text-sm text-white" role="status">Thank you. Your project details are in. We'll be in touch shortly.</p>
                             @elseif ($errors->any())
                                 <ul class="border-l-4 border-[#d33] bg-[#fdf2f2] px-3.5 py-3 text-sm text-[#a11]" role="alert">
                                     @foreach ($errors->all() as $error)

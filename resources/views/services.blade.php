@@ -231,7 +231,7 @@
                     </div>
 
                     @if (session('status') === 'contact-message-sent')
-                        <p class="mt-4 border-l-4 border-eccentric-blue bg-[#f6f6f6] px-3.5 py-3 text-sm" role="status">Thank you. Your request is in. We'll be in touch shortly.</p>
+                        <p class="mt-4 border-l-4 border-black bg-eccentric-blue px-3.5 py-3 text-sm text-white" role="status">Thank you. Your request is in. We'll be in touch shortly.</p>
                     @elseif ($errors->any())
                         <ul class="mt-4 border-l-4 border-[#d33] bg-[#fdf2f2] px-3.5 py-3 text-sm text-[#a11]" role="alert">
                             @foreach ($errors->all() as $error)
