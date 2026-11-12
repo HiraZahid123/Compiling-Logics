@@ -47,3 +47,13 @@ it('marks contact as the current page in the navigation', function () {
     expect($this->get(route('contact'))->getContent())->toMatch($currentContactLink)
         ->and($this->get(route('about'))->getContent())->not->toMatch($currentContactLink);
 });
+
+it('shows the reCAPTCHA checkbox on every contact form only when a site key is set', function (string $routeName) {
+    config(['services.recaptcha.site_key' => 'test-site-key']);
+    expect($this->get(route($routeName))->getContent())
+        ->toMatch('/<div class="g-recaptcha[^"]*"[^>]*data-sitekey="test-site-key"/')
+        ->toContain('<script src="https://www.google.com/recaptcha/api.js" async defer></script>');
+
+    config(['services.recaptcha.site_key' => null]);
+    $this->get(route($routeName))->assertDontSee('g-recaptcha', escape: false);
+})->with(['contact', 'services', 'work']);

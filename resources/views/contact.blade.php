@@ -26,12 +26,14 @@
             <label for="contact-message" class="sr-only">Message</label>
             <textarea id="contact-message" name="message" rows="5" placeholder="Message" required maxlength="5000" class="{{ $fieldClasses }} resize-none md:top-[62.93%] md:h-[12.88%] md:pt-[min(19.5px,1.016vw)]">{{ old('message') }}</textarea>
 
+            <x-recaptcha theme="dark" class="origin-top-left md:absolute md:top-[79.9%] md:left-[18.75%]" data-recaptcha-fit />
+
             <button type="submit" class="flex h-12 w-36 cursor-pointer items-center justify-center gap-3 rounded-md bg-eccentric-blue text-lg text-on-brand md:absolute md:top-[79.9%] md:left-[5.94%] md:h-[7.12%] md:w-[11.61%] md:rounded-lg md:bg-transparent">
                 <span class="md:sr-only">Send</span>
                 <span aria-hidden="true" class="md:hidden">&rarr;</span>
             </button>
 
-            <div class="text-sm text-on-brand md:absolute md:top-[79.9%] md:left-[18.75%] md:flex md:h-[7.12%] md:w-[27%] md:items-center md:text-[length:min(18px,0.9375vw)]" role="status">
+            <div class="text-sm text-on-brand md:absolute md:top-[88.3%] md:left-[5.94%] md:w-[40%] md:text-[length:min(18px,0.9375vw)]" role="status">
                 @if (session('status') === 'contact-message-sent')
                     <p>Thanks — your message is on its way. We'll get back to you soon.</p>
                 @elseif ($errors->any())

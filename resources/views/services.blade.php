@@ -224,6 +224,7 @@
                         <label class="block text-xs tracking-[0.05em] md:col-span-2">Project brief *
                             <textarea name="message" rows="3" placeholder="What friction do you want gone?" required maxlength="5000" class="mt-2 block w-full border border-black/30 bg-[#fafafa] px-3.5 py-3 text-sm focus:border-eccentric-blue focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,73,253,0.18)] focus:outline-none">{{ old('message') }}</textarea>
                         </label>
+                        <x-recaptcha class="md:col-span-2" />
                         <div class="md:col-span-2">
                             <button type="submit" class="{{ $blueButtonClasses }} cursor-pointer">Book a Call {!! $arrowIcon !!}</button>
                         </div>

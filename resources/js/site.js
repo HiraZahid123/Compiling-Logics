@@ -155,6 +155,20 @@ document.querySelectorAll('[data-pick-pillar]').forEach((link) => {
     });
 });
 
+const recaptchaOverlay = document.querySelector('[data-recaptcha-fit]');
+
+if (recaptchaOverlay) {
+    const fitRecaptcha = () => {
+        const isOverlaid = window.matchMedia('(min-width: 768px)').matches;
+        const scale = Math.min(1, recaptchaOverlay.offsetParent?.offsetWidth / 1920 || 1);
+
+        recaptchaOverlay.style.transform = isOverlaid ? `scale(${scale})` : '';
+    };
+
+    window.addEventListener('resize', fitRecaptcha);
+    fitRecaptcha();
+}
+
 const lazyVideos = document.querySelectorAll('[data-lazy-video]');
 
 if (lazyVideos.length > 0) {

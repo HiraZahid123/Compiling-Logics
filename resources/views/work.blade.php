@@ -687,16 +687,21 @@
                         <h3 class="text-2xl text-black font-normal mb-1">Tell us about your project</h3>
                         <p class="text-sm text-black/70 mb-6">We’ll take it from there.</p>
 
-                        <form action="/contact" method="GET" class="space-y-4">
+                        <form action="{{ route('contact.store') }}" method="POST" class="space-y-4">
+                            @csrf
+                            <input type="hidden" name="return_to" value="work">
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-xs uppercase tracking-wider text-black/70 mb-1.5" for="fName">Full name</label>
+                                    <label class="block text-xs uppercase tracking-wider text-black/70 mb-1.5" for="fName">Full name *</label>
                                     <input
                                         type="text"
                                         id="fName"
                                         name="name"
+                                        value="{{ old('name') }}"
                                         placeholder="Your name"
                                         required
+                                        maxlength="255"
+                                        autocomplete="name"
                                         class="w-full px-3.5 py-2.5 text-sm bg-neutral-50 border border-black/30 rounded-none focus:outline-hidden focus:border-eccentric-blue focus:bg-white transition-colors"
                                     >
                                 </div>
@@ -706,8 +711,11 @@
                                         type="email"
                                         id="fEmail"
                                         name="email"
+                                        value="{{ old('email') }}"
                                         placeholder="you@company.com"
                                         required
+                                        maxlength="255"
+                                        autocomplete="email"
                                         class="w-full px-3.5 py-2.5 text-sm bg-neutral-50 border border-black/30 rounded-none focus:outline-hidden focus:border-eccentric-blue focus:bg-white transition-colors"
                                     >
                                 </div>
@@ -720,16 +728,10 @@
                                     name="industry"
                                     class="w-full px-3.5 py-2.5 text-sm bg-neutral-50 border border-black/30 rounded-none focus:outline-hidden focus:border-eccentric-blue focus:bg-white transition-colors"
                                 >
-                                    <option value="" selected>Choose your industry</option>
-                                    <option value="healthcare">Healthcare</option>
-                                    <option value="real-estate">Real Estate</option>
-                                    <option value="hospitality">Hospitality</option>
-                                    <option value="legal">Legal</option>
-                                    <option value="education">Education</option>
-                                    <option value="industrial">Industrial</option>
-                                    <option value="fintech">Fintech &amp; Banking</option>
-                                    <option value="ecommerce">Retail &amp; E-commerce</option>
-                                    <option value="other">Other</option>
+                                    <option value="">Choose your industry</option>
+                                    @foreach (\App\Http\Requests\StoreContactMessageRequest::INDUSTRIES as $value => $label)
+                                        <option value="{{ $value }}" @selected(old('industry') === $value)>{{ $label }}</option>
+                                    @endforeach
                                 </select>
                             </div>
 
@@ -741,8 +743,9 @@
                                     rows="4"
                                     placeholder="What friction do you want gone? Share the goal and the problem you’re solving."
                                     required
+                                    maxlength="5000"
                                     class="w-full px-3.5 py-2.5 text-sm bg-neutral-50 border border-black/30 rounded-none focus:outline-hidden focus:border-eccentric-blue focus:bg-white transition-colors resize-y"
-                                ></textarea>
+                                >{{ old('message') }}</textarea>
                             </div>
 
                             <div class="flex items-center gap-2 pt-1">
@@ -751,6 +754,8 @@
                                     I understand and agree to the terms &amp; conditions.
                                 </label>
                             </div>
+
+                            <x-recaptcha />
 
                             <div class="pt-2">
                                 <button
@@ -763,6 +768,16 @@
                                     </svg>
                                 </button>
                             </div>
+
+                            @if (session('status') === 'contact-message-sent')
+                                <p class="border-l-4 border-eccentric-blue bg-neutral-100 px-3.5 py-3 text-sm" role="status">Thank you. Your project details are in. We'll be in touch shortly.</p>
+                            @elseif ($errors->any())
+                                <ul class="border-l-4 border-[#d33] bg-[#fdf2f2] px-3.5 py-3 text-sm text-[#a11]" role="alert">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            @endif
                         </form>
                     </div>
                 </div>

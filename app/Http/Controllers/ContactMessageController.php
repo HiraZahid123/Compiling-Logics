@@ -22,7 +22,7 @@ class ContactMessageController extends Controller
     {
         $contactMessage = ContactMessage::create([
             ...$request->safe()->only(['name', 'email']),
-            'message' => $request->messageWithPillars(),
+            'message' => $request->messageWithContext(),
         ]);
 
         try {
@@ -31,9 +31,11 @@ class ContactMessageController extends Controller
             report($exception);
         }
 
-        $redirect = $request->input('return_to') === 'services'
-            ? to_route('services')->withFragment('contact')
-            : to_route('contact');
+        $redirect = match ($request->input('return_to')) {
+            'services' => to_route('services')->withFragment('contact'),
+            'work' => to_route('work')->withFragment('contact'),
+            default => to_route('contact'),
+        };
 
         return $redirect->with('status', 'contact-message-sent');
     }

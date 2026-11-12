@@ -3,6 +3,7 @@
 use App\Mail\ContactMessageReceived;
 use App\Models\ContactMessage;
 use Illuminate\Support\Facades\Exceptions;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\Mailer\Exception\TransportException;
 
@@ -104,4 +105,60 @@ it('keeps the message and still thanks the visitor when the mail server is down'
 
     expect(ContactMessage::count())->toBe(1);
     Exceptions::assertReported(TransportException::class);
+});
+
+describe('with reCAPTCHA enabled', function () {
+    beforeEach(function () {
+        config(['services.recaptcha.secret_key' => 'test-secret']);
+    });
+
+    it('rejects a submission without the captcha tick', function () {
+        Http::fake();
+
+        $this->post(route('contact.store'), ContactMessage::factory()->raw())
+            ->assertSessionHasErrors(['g-recaptcha-response' => 'Please confirm you\'re not a robot.']);
+
+        expect(ContactMessage::count())->toBe(0);
+        Http::assertNothingSent();
+    });
+
+    it('rejects a token that Google does not accept', function () {
+        Http::fake(['www.google.com/recaptcha/api/siteverify' => Http::response(['success' => false])]);
+
+        $this->post(route('contact.store'), [...ContactMessage::factory()->raw(), 'g-recaptcha-response' => 'bad-token'])
+            ->assertSessionHasErrors(['g-recaptcha-response' => 'Please confirm you\'re not a robot.']);
+
+        expect(ContactMessage::count())->toBe(0);
+        Mail::assertNothingSent();
+    });
+
+    it('accepts a token that Google verifies', function () {
+        Http::fake(['www.google.com/recaptcha/api/siteverify' => Http::response(['success' => true])]);
+
+        $this->post(route('contact.store'), [...ContactMessage::factory()->raw(), 'g-recaptcha-response' => 'good-token'])
+            ->assertSessionHasNoErrors()
+            ->assertSessionHas('status', 'contact-message-sent');
+
+        expect(ContactMessage::count())->toBe(1);
+        Http::assertSent(fn ($request): bool => $request['secret'] === 'test-secret' && $request['response'] === 'good-token');
+    });
+});
+
+it('records the chosen industry and returns to the work page form', function () {
+    $this->post(route('contact.store'), [
+        'name' => 'Ada Lovelace',
+        'email' => 'ada@example.com',
+        'message' => 'We need a patient portal.',
+        'industry' => 'healthcare',
+        'return_to' => 'work',
+    ])->assertRedirect(route('work').'#contact');
+
+    expect(ContactMessage::sole()->message)->toBe("Industry: Healthcare\n\nWe need a patient portal.");
+});
+
+it('rejects an industry that is not on the list', function () {
+    $this->post(route('contact.store'), [...ContactMessage::factory()->raw(), 'industry' => 'casino'])
+        ->assertSessionHasErrors('industry');
+
+    expect(ContactMessage::count())->toBe(0);
 });

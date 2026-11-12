@@ -2,12 +2,30 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\Recaptcha;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class StoreContactMessageRequest extends FormRequest
 {
+    /**
+     * Industries a visitor can pick on the Work page form, keyed by submitted value.
+     *
+     * @var array<string, string>
+     */
+    public const INDUSTRIES = [
+        'healthcare' => 'Healthcare',
+        'real-estate' => 'Real Estate',
+        'hospitality' => 'Hospitality',
+        'legal' => 'Legal',
+        'education' => 'Education',
+        'industrial' => 'Industrial',
+        'fintech' => 'Fintech & Banking',
+        'ecommerce' => 'Retail & E-commerce',
+        'other' => 'Other',
+    ];
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -21,19 +39,40 @@ class StoreContactMessageRequest extends FormRequest
             'message' => ['required', 'string', 'max:5000'],
             'pillars' => ['nullable', 'array', 'max:6'],
             'pillars.*' => ['string', 'max:100'],
-            'return_to' => ['nullable', Rule::in(['services'])],
+            'industry' => ['nullable', Rule::in(array_keys(self::INDUSTRIES))],
+            'return_to' => ['nullable', Rule::in(['services', 'work'])],
+            'g-recaptcha-response' => Rule::when(
+                filled(config('services.recaptcha.secret_key')),
+                ['required', 'string', new Recaptcha],
+                ['exclude'],
+            ),
         ];
     }
 
     /**
-     * Get the message text, prefixed with any service pillars the visitor picked.
+     * Get custom messages for validator errors.
+     *
+     * @return array<string, string>
      */
-    public function messageWithPillars(): string
+    public function messages(): array
     {
-        $pillars = $this->array('pillars');
+        return [
+            'g-recaptcha-response.required' => 'Please confirm you\'re not a robot.',
+        ];
+    }
 
-        return $pillars === []
+    /**
+     * Get the message text, prefixed with any pillars or industry the visitor picked.
+     */
+    public function messageWithContext(): string
+    {
+        $context = array_filter([
+            $this->array('pillars') === [] ? null : 'Pillars of interest: '.implode(', ', $this->array('pillars')),
+            $this->filled('industry') ? 'Industry: '.self::INDUSTRIES[$this->string('industry')->toString()] : null,
+        ]);
+
+        return $context === []
             ? $this->string('message')->toString()
-            : 'Pillars of interest: '.implode(', ', $pillars)."\n\n".$this->string('message');
+            : implode("\n", $context)."\n\n".$this->string('message');
     }
 }

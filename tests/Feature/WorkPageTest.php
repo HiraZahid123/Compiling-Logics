@@ -67,3 +67,11 @@ it('versions work images by modification time so replaced files bypass caches', 
     $this->get(route('work'))
         ->assertSee('src="'.asset('images/work/kids-health-club.jpg').'?v='.$version.'"', escape: false);
 });
+
+it('posts the project form to the contact handler and returns to it', function () {
+    $html = $this->get(route('work'))->getContent();
+
+    expect($html)->toMatch('/<form action="'.preg_quote(route('contact.store'), '/').'" method="POST"/')
+        ->toContain('name="return_to" value="work"')
+        ->not->toContain('method="GET"');
+});
