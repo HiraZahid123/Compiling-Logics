@@ -53,9 +53,15 @@ if (projectFilters) {
 
             project.hidden = !isVisible;
             visibleCount += isVisible ? 1 : 0;
+
+            if (isVisible) {
+                project.classList.add('is-revealed');
+            }
         });
 
         emptyMessage?.classList.toggle('hidden', visibleCount > 0);
+
+        document.getElementById('projects-grid')?.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
     });
 }
 
@@ -220,58 +226,40 @@ if (testimonials) {
         });
     });
 
-    const modal = testimonials.querySelector('[data-testimonial-modal]');
-    const stage = modal.querySelector('[data-testimonial-stage]');
-    const caption = modal.querySelector('[data-testimonial-caption]');
+    const track = testimonials.querySelector('[data-testimonial-track]');
+    const previousButton = testimonials.querySelector('[data-testimonial-prev]');
+    const nextButton = testimonials.querySelector('[data-testimonial-next]');
+    const progress = testimonials.querySelector('[data-testimonial-progress]');
 
-    const closeModal = () => {
-        modal.classList.replace('flex', 'hidden');
-        stage.replaceChildren();
+    const cardStep = () => {
+        const card = [...items].find((item) => !item.hidden);
+
+        return card ? card.offsetWidth + parseFloat(getComputedStyle(track).columnGap || 0) : track.clientWidth;
     };
 
-    const playerFor = (url) => {
-        if (/\.(mp4|webm)(\?|$)/i.test(url)) {
-            const video = Object.assign(document.createElement('video'), { src: url, controls: true, autoplay: true, playsInline: true });
-            video.className = 'size-full';
+    const updateCarousel = () => {
+        const maxScroll = track.scrollWidth - track.clientWidth;
 
-            return video;
-        }
-
-        if (/^https:\/\//i.test(url)) {
-            const frame = Object.assign(document.createElement('iframe'), {
-                src: `${url}${url.includes('?') ? '&' : '?'}autoplay=1`,
-                title: 'Video testimonial',
-                allow: 'autoplay; encrypted-media; fullscreen',
-                allowFullscreen: true,
-            });
-            frame.className = 'size-full border-0';
-
-            return frame;
-        }
-
-        return Object.assign(document.createElement('p'), { textContent: 'This client video will appear here once its link is added.', className: 'px-6' });
+        previousButton.disabled = track.scrollLeft <= 2;
+        nextButton.disabled = track.scrollLeft >= maxScroll - 2;
+        progress.style.width = `${maxScroll > 0 ? Math.max(track.clientWidth / track.scrollWidth, track.scrollLeft / maxScroll) * 100 : 100}%`;
     };
 
-    testimonials.querySelectorAll('[data-testimonial-video]').forEach((poster) => {
-        poster.addEventListener('click', () => {
-            caption.textContent = poster.dataset.testimonialTitle;
-            stage.replaceChildren(playerFor(poster.dataset.testimonialVideo));
-            modal.classList.replace('hidden', 'flex');
-            modal.querySelector('[data-testimonial-close]').focus();
-        });
-    });
-
-    modal.querySelector('[data-testimonial-close]').addEventListener('click', closeModal);
-    modal.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            closeModal();
+    previousButton.addEventListener('click', () => track.scrollBy({ left: -cardStep() }));
+    nextButton.addEventListener('click', () => track.scrollBy({ left: cardStep() }));
+    track.addEventListener('scroll', updateCarousel, { passive: true });
+    track.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+            event.preventDefault();
+            track.scrollBy({ left: event.key === 'ArrowRight' ? cardStep() : -cardStep() });
         }
     });
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && modal.classList.contains('flex')) {
-            closeModal();
-        }
-    });
+    window.addEventListener('resize', updateCarousel);
+    filters.forEach((filter) => filter.addEventListener('click', () => {
+        track.scrollTo({ left: 0, behavior: 'instant' });
+        updateCarousel();
+    }));
+    updateCarousel();
 }
 
 const lazyVideos = document.querySelectorAll('[data-lazy-video]');

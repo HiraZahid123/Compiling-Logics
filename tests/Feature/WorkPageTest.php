@@ -76,11 +76,23 @@ it('posts the project form to the contact handler and returns to it', function (
         ->not->toContain('method="GET"');
 });
 
-it('shows the client testimonials section with video and written filters', function () {
-    $html = $this->get(route('work'))->assertSee('What clients say.')->getContent();
+it('shows the client reviews in the testimonials carousel', function () {
+    $html = $this->get(route('work'))
+        ->assertSee('What clients say.')
+        ->assertSeeInOrder(['Pawal', 'Poland', 'Salma', 'Egypt', 'Amanda', 'Australia'])
+        ->getContent();
 
-    expect(substr_count($html, 'data-testimonial-filter='))->toBe(3)
-        ->and(substr_count($html, 'data-testimonial-type="video"'))->toBe(2)
-        ->and(substr_count($html, 'data-testimonial-type="written"'))->toBe(3)
-        ->and($html)->toContain('data-testimonial-modal');
+    expect(substr_count($html, 'aria-roledescription="slide"'))->toBe(8)
+        ->and($html)->toContain('data-testimonial-next')
+        ->not->toContain('Placeholder');
+});
+
+it('links projects to their live websites', function () {
+    $this->get(route('work'))
+        ->assertSee('href="https://forcoach.io" target="_blank" rel="noopener"', escape: false)
+        ->assertSee('Visit Web');
+});
+
+it('lists ForCoach under the mobile app filter', function () {
+    $this->get(route('work'))->assertSee('data-types="web-app mobile-app"', escape: false);
 });

@@ -33,6 +33,7 @@
             'index' => '01',
             'image' => 'best-local-law.jpg',
             'pdf' => 'best-local-law.pdf',
+            'url' => 'https://bestlocallaw.com',
             'tags' => ['Directory', 'Legal', 'Search'],
             'types' => ['web-app', 'ai-agents'],
             'industries' => ['real-estate'],
@@ -47,6 +48,7 @@
             'index' => '02',
             'image' => 'jollywitme.jpg',
             'pdf' => 'jollywitme.pdf',
+            'url' => 'https://jollywitme.com',
             'tags' => ['SaaS', 'Events', 'Ticketing'],
             'types' => ['web-app', 'cloud-devops'],
             'industries' => ['fintech-banking', 'retail-ecommerce'],
@@ -61,6 +63,7 @@
             'index' => '03',
             'image' => 'expat-car-buyers.jpg',
             'pdf' => 'expat-car-buyers.pdf',
+            'url' => 'https://expatcarbuyers.com',
             'tags' => ['Marketplace', 'Automotive', 'UAE'],
             'types' => ['web-app', 'mobile-app'],
             'industries' => ['retail-ecommerce'],
@@ -75,6 +78,7 @@
             'index' => '04',
             'image' => 'certus-3d.jpg',
             'pdf' => 'certus-3d.pdf',
+            'url' => 'https://certus3d.com',
             'tags' => ['Industrial', '3D Printing', 'Catalogue'],
             'types' => ['web-app', 'design'],
             'industries' => ['retail-ecommerce'],
@@ -89,6 +93,7 @@
             'index' => '05',
             'image' => 'pdf-tools.jpg',
             'pdf' => 'pdf-tools.pdf',
+            'url' => 'https://www.pdftools.net',
             'tags' => ['Browser Tools', 'PDF', 'WASM'],
             'types' => ['web-app', 'qa'],
             'industries' => ['education', 'fintech-banking'],
@@ -103,6 +108,7 @@
             'index' => '06',
             'image' => 'fluencyi.jpg',
             'pdf' => 'fluencyi.pdf',
+            'url' => 'https://fluencyi.com',
             'tags' => ['Education', 'EdTech', 'Tutoring'],
             'types' => ['web-app', 'mobile-app'],
             'industries' => ['education'],
@@ -117,6 +123,7 @@
             'index' => '07',
             'image' => 'otelogia.jpg',
             'pdf' => 'otelogia.pdf',
+            'url' => 'https://ottelogia.com',
             'tags' => ['Hospitality', 'Real Estate', 'Booking'],
             'types' => ['web-app'],
             'industries' => ['hospitality', 'real-estate'],
@@ -131,6 +138,7 @@
             'index' => '08',
             'image' => 'busy-spr.jpg',
             'pdf' => 'busy-spr.pdf',
+            'url' => 'https://busyspr.com',
             'tags' => ['EdTech', 'Productivity', 'SaaS'],
             'types' => ['web-app'],
             'industries' => ['education'],
@@ -145,6 +153,7 @@
             'index' => '09',
             'image' => 'go-get-notary.jpg',
             'pdf' => 'go-get-notary.pdf',
+            'url' => 'https://gogetnotary.com',
             'tags' => ['Legal', 'On-Demand', 'Booking'],
             'types' => ['web-app'],
             'industries' => ['real-estate'],
@@ -159,6 +168,7 @@
             'index' => '10',
             'image' => 'kids-health-club.jpg',
             'pdf' => 'kids-health-club.pdf',
+            'url' => 'https://kidshealthhub.com.au',
             'tags' => ['Healthcare', 'Paediatrics', 'Directory'],
             'types' => ['web-app'],
             'industries' => ['healthcare'],
@@ -173,6 +183,7 @@
             'index' => '11',
             'image' => 'tutor-hub.jpg',
             'pdf' => 'tutor-hub.pdf',
+            'url' => 'https://tutorhub.pk',
             'tags' => ['Marketplace', 'Tutoring', 'Reviews'],
             'types' => ['web-app', 'qa'],
             'industries' => ['education'],
@@ -187,6 +198,7 @@
             'index' => '12',
             'image' => 'droppr-ai.jpg',
             'pdf' => 'droppr-ai.pdf',
+            'url' => 'https://droppr.ai',
             'tags' => ['AI', 'PR Automation', 'Media'],
             'types' => ['ai-agents', 'web-app'],
             'industries' => [],
@@ -201,8 +213,9 @@
             'index' => '13',
             'image' => 'forcoach.jpg',
             'pdf' => 'forcoach.pdf',
+            'url' => 'https://forcoach.io',
             'tags' => ['SaaS', 'Scheduling', 'Invoicing'],
-            'types' => ['web-app'],
+            'types' => ['web-app', 'mobile-app'],
             'industries' => [],
             'description' => [
                 'text' => 'An operating system for instructors teaching across multiple studios: it tracks classes at every studio, calculates earnings automatically and generates professional invoices.',
@@ -410,7 +423,7 @@
         </div>
 
         {{-- 3-Column Portfolio Cards Grid --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="projects-grid">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 scroll-mt-24" id="projects-grid">
             @foreach ($projects as $project)
                 <article
                     data-reveal
@@ -456,9 +469,17 @@
 
                     {{-- Card Body --}}
                     <div class="p-6 flex flex-col flex-1">
-                        <p class="text-[11px] leading-tight tracking-[0.15em] uppercase text-black/70 mb-2.5">
-                            Case Study <span class="text-eccentric-blue mx-1">/</span> {{ $project['category'] }}
-                        </p>
+                        <div class="mb-2.5 flex items-center justify-between gap-3">
+                            <p class="text-[11px] leading-tight tracking-[0.15em] uppercase text-black/70">
+                                Case Study <span class="text-eccentric-blue mx-1">/</span> {{ $project['category'] }}
+                            </p>
+                            @if (! empty($project['url']))
+                                <a href="{{ $project['url'] }}" target="_blank" rel="noopener" class="inline-flex shrink-0 items-center gap-1.5 border-b border-eccentric-blue pb-0.5 text-[11px] tracking-[0.12em] uppercase text-black transition-colors hover:text-eccentric-blue" aria-label="Visit the {{ $project['name'] }} website">
+                                    Visit Web
+                                    <svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10"/></svg>
+                                </a>
+                            @endif
+                        </div>
 
                         <h3 class="text-lg leading-snug text-black mb-2.5 font-normal">
                             {{ $project['name'] }}
