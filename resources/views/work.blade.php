@@ -285,7 +285,7 @@
     </section>
 
     {{-- ============ SHOWROOM ============ --}}
-    <section class="bg-white pb-16 font-electrolize text-black md:pb-24" aria-label="Project showroom">
+    <section id="showroom" class="scroll-mt-6 bg-white pb-16 font-electrolize text-black md:pb-24" aria-label="Project showroom">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="grid border border-black bg-white lg:grid-cols-[340px_1fr]" data-showroom data-reveal>
                 <ul class="flex overflow-x-auto border-b border-black lg:block lg:overflow-visible lg:border-r lg:border-b-0" role="tablist" aria-label="Projects">

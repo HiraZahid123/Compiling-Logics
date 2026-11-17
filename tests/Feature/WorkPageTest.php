@@ -53,15 +53,13 @@ it('posts the project form to the contact handler and returns to it', function (
         ->not->toContain('method="GET"');
 });
 
-it('shows the client reviews in the testimonials carousel', function () {
-    $html = $this->get(route('work'))
-        ->assertSee('What clients say.')
-        ->assertSeeInOrder(['Pawal', 'Poland', 'Salma', 'Egypt', 'Amanda', 'Australia'])
-        ->getContent();
+it('shows placeholder testimonials in the design layout until real ones are added', function () {
+    $html = $this->get(route('work'))->assertSee('What clients say.')->getContent();
 
-    expect(substr_count($html, 'data-testimonial-type="written"'))->toBe(8)
+    expect(substr_count($html, 'data-testimonial-type="written"'))->toBe(3)
         ->and(substr_count($html, 'data-testimonial-type="video"'))->toBe(2)
         ->and(substr_count($html, 'data-testimonial-filter='))->toBe(3)
+        ->and(substr_count($html, '>Placeholder</span>'))->toBe(5)
         ->and($html)->toContain('data-testimonial-modal')
-        ->not->toContain('data-testimonial-track');
+        ->not->toContain('Pawal');
 });
