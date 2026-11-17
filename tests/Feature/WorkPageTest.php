@@ -62,6 +62,6 @@ it('shows the client reviews in the testimonials carousel', function () {
     expect(substr_count($html, 'data-testimonial-type="written"'))->toBe(8)
         ->and(substr_count($html, 'data-testimonial-type="video"'))->toBe(2)
         ->and(substr_count($html, 'data-testimonial-filter='))->toBe(3)
-        ->and($html)->toContain('data-testimonial-next')
-        ->toContain('data-testimonial-modal');
+        ->and($html)->toContain('data-testimonial-modal')
+        ->not->toContain('data-testimonial-track');
 });

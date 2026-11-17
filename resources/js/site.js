@@ -298,41 +298,6 @@ if (testimonials) {
         });
     });
 
-    const track = testimonials.querySelector('[data-testimonial-track]');
-    const previousButton = testimonials.querySelector('[data-testimonial-prev]');
-    const nextButton = testimonials.querySelector('[data-testimonial-next]');
-    const progress = testimonials.querySelector('[data-testimonial-progress]');
-
-    const cardStep = () => {
-        const card = [...items].find((item) => !item.hidden);
-
-        return card ? card.offsetWidth + parseFloat(getComputedStyle(track).columnGap || 0) : track.clientWidth;
-    };
-
-    const updateCarousel = () => {
-        const maxScroll = track.scrollWidth - track.clientWidth;
-
-        previousButton.disabled = track.scrollLeft <= 2;
-        nextButton.disabled = track.scrollLeft >= maxScroll - 2;
-        progress.style.width = `${maxScroll > 0 ? Math.max(track.clientWidth / track.scrollWidth, track.scrollLeft / maxScroll) * 100 : 100}%`;
-    };
-
-    previousButton.addEventListener('click', () => track.scrollBy({ left: -cardStep() }));
-    nextButton.addEventListener('click', () => track.scrollBy({ left: cardStep() }));
-    track.addEventListener('scroll', updateCarousel, { passive: true });
-    track.addEventListener('keydown', (event) => {
-        if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
-            event.preventDefault();
-            track.scrollBy({ left: event.key === 'ArrowRight' ? cardStep() : -cardStep() });
-        }
-    });
-    window.addEventListener('resize', updateCarousel);
-    filters.forEach((filter) => filter.addEventListener('click', () => {
-        track.scrollTo({ left: 0, behavior: 'instant' });
-        updateCarousel();
-    }));
-    updateCarousel();
-
     const modal = testimonials.querySelector('[data-testimonial-modal]');
 
     if (modal) {
