@@ -23,46 +23,118 @@ if (heroVideo && prefersReducedMotion) {
     heroVideo.pause();
 }
 
-const projectFilters = document.querySelector('[data-project-filters]');
+const showroom = document.querySelector('[data-showroom]');
 
-if (projectFilters) {
-    const projects = document.querySelectorAll('[data-project]');
-    const emptyMessage = document.querySelector('[data-projects-empty]');
-    const activeFilters = { type: 'all', industry: 'all' };
+if (showroom) {
+    const tabs = [...showroom.querySelectorAll('[data-showroom-tab]')];
+    const stage = showroom.querySelector('[data-showroom-stage]');
+    const image = stage.querySelector('[data-showroom-image]');
+    const caseStudy = stage.querySelector('[data-showroom-case-study]');
+    const visit = stage.querySelector('[data-showroom-visit]');
+    const toggle = stage.querySelector('[data-showroom-toggle]');
+    const autoplayDuration = 7000;
+    let current = 0;
+    let isPlaying = !prefersReducedMotion;
+    let pausedByHover = false;
+    let startedAt = performance.now();
 
-    const matches = (project, attribute, value) => value === 'all' || project.dataset[attribute].split(' ').includes(value);
+    const field = (name) => stage.querySelector(`[data-showroom-${name}]`);
 
-    projectFilters.addEventListener('click', (event) => {
-        const button = event.target.closest('[data-filter-group]');
+    const show = (index) => {
+        current = (index + tabs.length) % tabs.length;
+        const tab = tabs[current];
+        const project = tab.dataset;
 
-        if (!button) {
-            return;
+        tabs.forEach((option) => {
+            option.setAttribute('aria-selected', String(option === tab));
+            option.querySelector('[data-showroom-bar]').style.width = '0';
+        });
+
+        image.classList.add('opacity-0');
+        setTimeout(() => {
+            image.src = project.image;
+            image.alt = `${project.name} website preview`;
+            image.classList.remove('opacity-0');
+        }, 180);
+
+        field('domain').textContent = project.domain;
+        field('category').textContent = project.category;
+        field('name').textContent = project.name;
+        field('description').innerHTML = project.description;
+        field('tags').replaceChildren(
+            ...project.tags.split('|').map((tag) =>
+                Object.assign(document.createElement('li'), { textContent: tag, className: 'border border-black/14 bg-white px-2.5 py-1 text-xs tracking-[0.05em]' }),
+            ),
+        );
+
+        caseStudy.disabled = !project.pdf;
+        caseStudy.dataset.projectName = project.name;
+        caseStudy.dataset.pdfUrl = project.pdf;
+        caseStudy.querySelector('[data-showroom-case-study-label]').textContent = project.pdf ? 'View Case Study' : 'Case study coming soon';
+
+        visit.href = project.url || '#';
+        visit.classList.toggle('hidden', !project.url);
+
+        startedAt = performance.now();
+
+        if (window.innerWidth < 1024) {
+            tab.scrollIntoView({ inline: 'center', block: 'nearest' });
+        }
+    };
+
+    const setPlaying = (playing) => {
+        isPlaying = playing;
+        startedAt = performance.now();
+        toggle.setAttribute('aria-label', playing ? 'Pause autoplay' : 'Play autoplay');
+        toggle.querySelector('[data-showroom-pause-icon]').classList.toggle('hidden', !playing);
+        toggle.querySelector('[data-showroom-play-icon]').classList.toggle('hidden', playing);
+
+        if (!playing) {
+            tabs[current].querySelector('[data-showroom-bar]').style.width = '0';
+        }
+    };
+
+    const tick = (now) => {
+        if (isPlaying) {
+            const progress = Math.min((now - startedAt) / autoplayDuration, 1);
+            tabs[current].querySelector('[data-showroom-bar]').style.width = `${progress * 100}%`;
+
+            if (progress >= 1) {
+                show(current + 1);
+            }
         }
 
-        const { filterGroup, filterValue } = button.dataset;
-        activeFilters[filterGroup] = filterValue;
+        requestAnimationFrame(tick);
+    };
 
-        projectFilters.querySelectorAll(`[data-filter-group="${filterGroup}"]`).forEach((option) => {
-            option.setAttribute('aria-pressed', String(option === button));
-        });
+    tabs.forEach((tab, index) => tab.addEventListener('click', () => show(index)));
+    stage.querySelector('[data-showroom-prev]').addEventListener('click', () => show(current - 1));
+    stage.querySelector('[data-showroom-next]').addEventListener('click', () => show(current + 1));
+    toggle.addEventListener('click', () => setPlaying(!isPlaying));
 
-        let visibleCount = 0;
-
-        projects.forEach((project) => {
-            const isVisible = matches(project, 'types', activeFilters.type) && matches(project, 'industries', activeFilters.industry);
-
-            project.hidden = !isVisible;
-            visibleCount += isVisible ? 1 : 0;
-
-            if (isVisible) {
-                project.classList.add('is-revealed');
-            }
-        });
-
-        emptyMessage?.classList.toggle('hidden', visibleCount > 0);
-
-        document.getElementById('projects-grid')?.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
+    stage.addEventListener('mouseenter', () => {
+        if (isPlaying) {
+            pausedByHover = true;
+            setPlaying(false);
+        }
     });
+    stage.addEventListener('mouseleave', () => {
+        if (pausedByHover) {
+            pausedByHover = false;
+            setPlaying(true);
+        }
+    });
+
+    showroom.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+            event.preventDefault();
+            show(current + (event.key === 'ArrowRight' ? 1 : -1));
+            tabs[current].focus();
+        }
+    });
+
+    setPlaying(isPlaying);
+    requestAnimationFrame(tick);
 }
 
 const revealElements = document.querySelectorAll('[data-reveal]');
@@ -260,6 +332,62 @@ if (testimonials) {
         updateCarousel();
     }));
     updateCarousel();
+
+    const modal = testimonials.querySelector('[data-testimonial-modal]');
+
+    if (modal) {
+        const stage = modal.querySelector('[data-testimonial-stage]');
+        const caption = modal.querySelector('[data-testimonial-caption]');
+
+        const closeModal = () => {
+            modal.classList.replace('flex', 'hidden');
+            stage.replaceChildren();
+        };
+
+        const playerFor = (url) => {
+            if (/\.(mp4|webm)(\?|$)/i.test(url)) {
+                const video = Object.assign(document.createElement('video'), { src: url, controls: true, autoplay: true, playsInline: true });
+                video.className = 'size-full';
+
+                return video;
+            }
+
+            if (/^https:\/\//i.test(url)) {
+                const frame = Object.assign(document.createElement('iframe'), {
+                    src: `${url}${url.includes('?') ? '&' : '?'}autoplay=1`,
+                    title: 'Video testimonial',
+                    allow: 'autoplay; encrypted-media; fullscreen',
+                    allowFullscreen: true,
+                });
+                frame.className = 'size-full border-0';
+
+                return frame;
+            }
+
+            return Object.assign(document.createElement('p'), { textContent: 'This client video will appear here once its link is added.', className: 'px-6' });
+        };
+
+        testimonials.querySelectorAll('[data-testimonial-video]').forEach((poster) => {
+            poster.addEventListener('click', () => {
+                caption.textContent = poster.dataset.testimonialTitle;
+                stage.replaceChildren(playerFor(poster.dataset.testimonialVideo));
+                modal.classList.replace('hidden', 'flex');
+                modal.querySelector('[data-testimonial-close]').focus();
+            });
+        });
+
+        modal.querySelector('[data-testimonial-close]').addEventListener('click', closeModal);
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && modal.classList.contains('flex')) {
+                closeModal();
+            }
+        });
+    }
 }
 
 const lazyVideos = document.querySelectorAll('[data-lazy-video]');

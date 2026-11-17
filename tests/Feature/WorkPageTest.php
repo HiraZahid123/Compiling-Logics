@@ -1,20 +1,14 @@
 <?php
 
-it('renders the project showcase in order', function () {
+it('lists every project in the showroom in order', function () {
     $this->get(route('work'))
         ->assertOk()
+        ->assertSee('Pick a project.')
         ->assertSeeInOrder([
-            'alt="Best Local Law"',
-            'alt="JollyWitMe"',
-            'alt="Expat Car Buyers"',
-            'alt="Certus 3D"',
-            'alt="PDF Tools"',
-            'alt="Fluencyi"',
-            'alt="Otelogia"',
-            'alt="Busy SPR"',
-            'alt="Go Get Notary"',
-            'alt="Kids Health Club"',
-            'alt="Tutor Hub"',
+            'data-name="Best Local Law"', 'data-name="JollyWitMe"', 'data-name="Expat Car Buyers"',
+            'data-name="Certus 3D"', 'data-name="PDF Tools"', 'data-name="Fluencyi"', 'data-name="Otelogia"',
+            'data-name="Busy SPR"', 'data-name="Go Get Notary"', 'data-name="Kids Health Club"',
+            'data-name="Tutor Hub"', 'data-name="DropPR.ai"', 'data-name="ForCoach"', 'data-name="Novartis Tech Café"',
         ], escape: false);
 });
 
@@ -25,47 +19,30 @@ it('marks work as the current page in the navigation', function () {
         ->and($this->get(route('services'))->getContent())->not->toMatch($currentWorkLink);
 });
 
-it('tags each project with the filters it belongs to', function () {
+it('opens the first project in the showroom stage with its case study and website', function () {
     $this->get(route('work'))
-        ->assertSee('data-types="web-app" data-industries="healthcare"', escape: false)
-        ->assertSee('data-types="web-app" data-industries="hospitality real-estate"', escape: false);
+        ->assertSee('alt="Best Local Law website preview"', escape: false)
+        ->assertSee('data-case-study-modal', escape: false)
+        ->assertSee('data-pdf-url="'.asset('case-studies/best-local-law.pdf').'?v=', escape: false)
+        ->assertSee('href="https://bestlocallaw.com" target="_blank" rel="noopener"', escape: false);
 });
 
-it('starts with all filters selected', function () {
+it('gives each project its case study pdf and website domain', function (string $name, string $pdf, string $domain) {
     $html = $this->get(route('work'))->getContent();
 
-    expect(preg_match_all('/aria-pressed="true"\s+data-filter-group=/', $html))->toBe(2)
-        ->and($html)->toMatch('/aria-pressed="true"\s+data-filter-group="type"\s+data-filter-value="all"/')
-        ->and($html)->toMatch('/aria-pressed="true"\s+data-filter-group="industry"\s+data-filter-value="all"/');
-});
+    expect(public_path('case-studies/'.$pdf))->toBeFile()
+        ->and($html)->toMatch('/data-name="'.preg_quote($name, '/').'".*?data-domain="'.preg_quote($domain, '/').'"\s+data-pdf="'.preg_quote(asset('case-studies/'.$pdf), '/').'\?v=\d+"/s');
+})->with([
+    ['DropPR.ai', 'droppr-ai.pdf', 'droppr.ai'],
+    ['ForCoach', 'forcoach.pdf', 'forcoach.io'],
+    ['PDF Tools', 'pdf-tools.pdf', 'pdftools.net'],
+]);
 
-it('links each project to its case study pdf and renders the viewer modal', function () {
-    $this->get(route('work'))
-        ->assertOk()
-        ->assertSee('data-case-study-modal', escape: false)
-        ->assertSee('data-case-study-frame', escape: false)
-        ->assertSee('data-pdf-url="'.asset('case-studies/best-local-law.pdf').'?v=', escape: false)
-        ->assertSee('data-pdf-url="'.asset('case-studies/tutor-hub.pdf').'?v=', escape: false)
-        ->assertSee('Read Case Study (PDF)', escape: false);
-});
-
-it('lists DropPR.ai, ForCoach and Novartis Tech Café after the original projects', function () {
-    $this->get(route('work'))
-        ->assertSeeInOrder(['alt="Tutor Hub"', 'alt="DropPR.ai"', 'alt="ForCoach"', 'alt="Novartis Tech Café"'], escape: false);
-});
-
-it('links the newly added projects to their case study pdfs', function (string $pdf) {
-    expect(public_path('case-studies/'.$pdf))->toBeFile();
-
-    $this->get(route('work'))
-        ->assertSee('data-pdf-url="'.asset('case-studies/'.$pdf).'?v=', escape: false);
-})->with(['droppr-ai.pdf', 'forcoach.pdf', 'novartis-tech-cafe.pdf']);
-
-it('versions work images by modification time so replaced files bypass caches', function () {
+it('versions showroom images by modification time so replaced files bypass caches', function () {
     $version = filemtime(public_path('images/work/kids-health-club.jpg'));
 
     $this->get(route('work'))
-        ->assertSee('src="'.asset('images/work/kids-health-club.jpg').'?v='.$version.'"', escape: false);
+        ->assertSee('data-image="'.asset('images/work/kids-health-club.jpg').'?v='.$version.'"', escape: false);
 });
 
 it('posts the project form to the contact handler and returns to it', function () {
@@ -82,17 +59,9 @@ it('shows the client reviews in the testimonials carousel', function () {
         ->assertSeeInOrder(['Pawal', 'Poland', 'Salma', 'Egypt', 'Amanda', 'Australia'])
         ->getContent();
 
-    expect(substr_count($html, 'aria-roledescription="slide"'))->toBe(8)
+    expect(substr_count($html, 'data-testimonial-type="written"'))->toBe(8)
+        ->and(substr_count($html, 'data-testimonial-type="video"'))->toBe(2)
+        ->and(substr_count($html, 'data-testimonial-filter='))->toBe(3)
         ->and($html)->toContain('data-testimonial-next')
-        ->not->toContain('Placeholder');
-});
-
-it('links projects to their live websites', function () {
-    $this->get(route('work'))
-        ->assertSee('href="https://forcoach.io" target="_blank" rel="noopener"', escape: false)
-        ->assertSee('Visit Web');
-});
-
-it('lists ForCoach under the mobile app filter', function () {
-    $this->get(route('work'))->assertSee('data-types="web-app mobile-app"', escape: false);
+        ->toContain('data-testimonial-modal');
 });

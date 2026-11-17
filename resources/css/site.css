@@ -295,3 +295,20 @@
         animation: none;
     }
 }
+
+/*
+ * Work page showroom: grid stage behind the project window and the
+ * outlined project count in the closing band.
+ */
+.showroom-stage {
+    background-color: #f6f6f6;
+    background-image:
+        linear-gradient(rgb(0 0 0 / 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(0 0 0 / 0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+}
+
+.showroom-big-count {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgb(255 255 255 / 0.5);
+}
