@@ -124,7 +124,7 @@
                         <figure class="relative m-0 pr-3.5 pb-3.5">
                             <span class="absolute inset-[14px_0_0_14px] border border-black" aria-hidden="true"></span>
                             <div class="services-shot relative z-10 aspect-[2.4/1] overflow-hidden border border-black bg-black">
-                                <x-lazy-video :src="asset('videos/services/'.$item['id'].'.mp4')" :poster="asset('images/services/posters/'.$item['id'].'.jpg')" />
+                                <x-lazy-video :src="asset('videos/services/'.$item['id'].'.mp4')" :poster="asset('images/services/posters/'.$item['id'].'.webp')" />
                                 <span class="absolute top-0 left-0 border-r border-b border-black bg-white px-3 py-1.5 text-xs tracking-[0.1em]">{{ $number($loop->iteration) }}</span>
                             </div>
                         </figure>

@@ -1,11 +1,11 @@
 @php
     $services = [
-        ['image' => 'ai-agents-automation.png', 'alt' => 'AI Agents & Automation — AI/ML, Chatbots, Workflow Integrations', 'url' => route('services').'#ai-agents-automation'],
-        ['image' => 'software-development.png', 'alt' => 'Software Development — MVP, SaaS, Web, Mobile, Enterprise mobility', 'url' => route('services').'#software-development'],
-        ['image' => 'cloud-devops.png', 'alt' => 'Cloud & DevOps — Infrastructure, Deployment, Scaling', 'url' => route('services').'#cloud-devops'],
-        ['image' => 'quality-assurance.png', 'alt' => 'Quality Assurance — Software testing, end to end', 'url' => route('services').'#quality-assurance'],
-        ['image' => 'design.png', 'alt' => 'Design — UX/UI, Graphic Design, Brand Identity', 'url' => route('services').'#design'],
-        ['image' => 'it-consultation.png', 'alt' => 'IT Consultation — Advisory before the build starts', 'url' => route('services').'#it-consultation'],
+        ['image' => 'ai-agents-automation.webp', 'alt' => 'AI Agents & Automation — AI/ML, Chatbots, Workflow Integrations', 'url' => route('services').'#ai-agents-automation'],
+        ['image' => 'software-development.webp', 'alt' => 'Software Development — MVP, SaaS, Web, Mobile, Enterprise mobility', 'url' => route('services').'#software-development'],
+        ['image' => 'cloud-devops.webp', 'alt' => 'Cloud & DevOps — Infrastructure, Deployment, Scaling', 'url' => route('services').'#cloud-devops'],
+        ['image' => 'quality-assurance.webp', 'alt' => 'Quality Assurance — Software testing, end to end', 'url' => route('services').'#quality-assurance'],
+        ['image' => 'design.webp', 'alt' => 'Design — UX/UI, Graphic Design, Brand Identity', 'url' => route('services').'#design'],
+        ['image' => 'it-consultation.webp', 'alt' => 'IT Consultation — Advisory before the build starts', 'url' => route('services').'#it-consultation'],
     ];
 @endphp
 

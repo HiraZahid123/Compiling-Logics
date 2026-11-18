@@ -1,8 +1,8 @@
 @php
     $projects = [
-        ['image' => 'forcoach.jpg', 'name' => 'ForCoach', 'category' => 'SaaS', 'url' => 'https://forcoach.io'],
-        ['image' => 'jollywitme.jpg', 'name' => 'JollyWitMe', 'category' => 'Events SaaS', 'url' => 'https://jollywitme.com'],
-        ['image' => 'droppr-ai.jpg', 'name' => 'DropPR.ai', 'category' => 'AI SaaS', 'url' => 'https://droppr.ai'],
+        ['image' => 'forcoach.webp', 'name' => 'ForCoach', 'category' => 'SaaS', 'url' => 'https://forcoach.io'],
+        ['image' => 'jollywitme.webp', 'name' => 'JollyWitMe', 'category' => 'Events SaaS', 'url' => 'https://jollywitme.com'],
+        ['image' => 'droppr-ai.webp', 'name' => 'DropPR.ai', 'category' => 'AI SaaS', 'url' => 'https://droppr.ai'],
     ];
 @endphp
 

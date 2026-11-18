@@ -11,7 +11,7 @@
         <h1 id="contact-heading" class="sr-only">Let's Build Something Great Together</h1>
 
         <div class="relative aspect-[960/430] overflow-hidden md:aspect-[1920/1025]">
-            <img src="{{ asset('images/contact/contact-banner.png') }}" alt="Get in touch. Have a project in mind or just want to say hello? We'd love to hear from you." class="absolute top-0 left-0 h-[238.37%] w-auto max-w-none md:h-full md:w-full" width="1920" height="1025">
+            <img src="{{ asset('images/contact/contact-banner.webp') }}" alt="Get in touch. Have a project in mind or just want to say hello? We'd love to hear from you." class="absolute top-0 left-0 h-[238.37%] w-auto max-w-none md:h-full md:w-full" width="1920" height="1025">
         </div>
 
         <form id="contact-form" method="POST" action="{{ route('contact.store') }}" class="flex flex-col gap-4 bg-[#030a17] px-4 py-8 sm:px-8 md:absolute md:inset-0 md:block md:bg-transparent md:p-0">

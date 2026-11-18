@@ -12,7 +12,7 @@
 <header class="relative z-20 bg-header font-electrolize">
     <div class="relative flex h-[72px] items-center justify-between px-4 sm:px-8 xl:h-[100px] xl:items-start xl:pr-[71px] xl:pl-[100px]">
         <a href="{{ route('home') }}" class="relative block h-12 w-[196px] shrink-0 overflow-hidden xl:mt-[29px]" aria-label="Compiling Logics home">
-            <img src="{{ asset('images/logo.png') }}" alt="Compiling Logics" class="absolute top-[-116px] left-[-100px] h-[197px] w-[350px] max-w-none">
+            <img src="{{ asset('images/logo-header.webp') }}" alt="Compiling Logics" class="block h-12 w-[196px]" width="196" height="48">
         </a>
 
         <nav class="absolute top-[46px] left-1/2 hidden -translate-x-1/2 gap-[23px] xl:flex" aria-label="Main">

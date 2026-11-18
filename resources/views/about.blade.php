@@ -5,7 +5,7 @@
 @section('content')
     <div class="relative font-electrolize">
         <section class="relative aspect-[1150/1176] overflow-hidden md:aspect-[1920/1176] xl:static xl:overflow-visible" aria-labelledby="about-heading">
-            <img src="{{ asset('images/about/about-banner.jpg') }}" alt="" class="absolute top-0 left-0 h-[203.06%] w-auto max-w-none md:h-auto md:w-full" width="1920" height="2388">
+            <img src="{{ asset('images/about/about-banner.webp') }}" alt="" class="absolute top-0 left-0 h-[203.06%] w-auto max-w-none md:h-auto md:w-full" width="1920" height="2388">
             <h1 id="about-heading" class="sr-only">
                 Building Digital Solutions That Last. We turn ideas into powerful digital products through innovation, precision and a commitment to long-term success. Trust: no disappearing after launch, the relationship continues. Quality: engineered, not guessed, every deliverable has a reason behind it. Timely Delivery: dates that get kept, not revised after the fact.
             </h1>
@@ -29,7 +29,7 @@
         </section>
 
         <section class="image-hover image-hover-subtle relative mt-4 xl:mt-[min(98px,5.104vw)]" aria-label="Our work culture" data-reveal>
-            <img src="{{ asset('images/about/great-people.png') }}" alt="Our work culture — Great People. Better Solutions. We believe in a culture of trust, collaboration and innovation, because great work happens when people grow together. Live Team: reachable across time zones, not just business hours. AI Chatbot: handles the first response the moment the team isn't at a keyboard." class="block aspect-[1918/639] w-full object-cover" width="1918" height="639" loading="lazy">
+            <img src="{{ asset('images/about/great-people.webp') }}" alt="Our work culture — Great People. Better Solutions. We believe in a culture of trust, collaboration and innovation, because great work happens when people grow together. Live Team: reachable across time zones, not just business hours. AI Chatbot: handles the first response the moment the team isn't at a keyboard." class="block aspect-[1918/639] w-full object-cover" width="1918" height="639" loading="lazy">
         </section>
 
         <section class="relative flex flex-col items-start gap-6 px-4 pt-12 pb-16 sm:px-8 xl:flex-row xl:items-center xl:justify-between xl:px-[min(100px,5.208vw)] xl:pt-[min(47px,2.448vw)] xl:pb-[min(335px,17.448vw)]" aria-labelledby="about-cta-heading">

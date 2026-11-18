@@ -39,10 +39,10 @@ it('gives each project its case study pdf and website domain', function (string 
 ]);
 
 it('versions showroom images by modification time so replaced files bypass caches', function () {
-    $version = filemtime(public_path('images/work/kids-health-club.jpg'));
+    $version = filemtime(public_path('images/work/kids-health-club.webp'));
 
     $this->get(route('work'))
-        ->assertSee('data-image="'.asset('images/work/kids-health-club.jpg').'?v='.$version.'"', escape: false);
+        ->assertSee('data-image="'.asset('images/work/kids-health-club.webp').'?v='.$version.'"', escape: false);
 });
 
 it('posts the project form to the contact handler and returns to it', function () {
