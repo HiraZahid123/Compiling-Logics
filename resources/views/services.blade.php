@@ -1,6 +1,7 @@
 @extends('layouts.site')
 
 @section('title', 'Services — Compiling Logics')
+@section('description', 'Six service pillars: AI agents and automation, software development, cloud and DevOps, quality assurance, design and IT consultation. Use one or combine them.')
 
 @php
     $pillars = [

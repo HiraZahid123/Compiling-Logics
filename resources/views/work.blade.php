@@ -1,6 +1,7 @@
 @extends('layouts.site')
 
 @section('title', 'Work — Compiling Logics')
+@section('description', 'Live builds by Compiling Logics, from legal directories to SaaS platforms. Browse 14 projects, open each case study or visit the live website.')
 
 @php
     $deliverableTypes = [

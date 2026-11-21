@@ -1,6 +1,7 @@
 @extends('layouts.site')
 
 @section('title', 'Contact — Compiling Logics')
+@section('description', 'Have a project in mind? Send Compiling Logics a message or book a call. We reply within one business day, in any timezone.')
 
 @php
     $pillars = ['AI Agents & Automation', 'Software Development', 'Cloud & DevOps', 'Quality Assurance', 'Design', 'IT Consultation'];

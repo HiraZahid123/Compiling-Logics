@@ -1,6 +1,7 @@
 @extends('layouts.site')
 
 @section('title', 'About — Compiling Logics')
+@section('description', 'Compiling Logics builds digital solutions that last: trust, quality and timely delivery, from a team that actually answers across time zones.')
 
 @php
     $values = [

@@ -1,6 +1,7 @@
 @extends('layouts.site')
 
 @section('title', 'Compiling Logics — Engineered Digital Systems')
+@section('description', '24/7 AI agents, workflow automation and resilient custom software that free enterprises from manual friction in healthcare, real estate and hospitality.')
 
 @php
     $telemetry = [
