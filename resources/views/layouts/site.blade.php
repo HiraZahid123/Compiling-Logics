@@ -11,11 +11,8 @@
         <title>@yield('title', config('app.name', 'Compiling Logics'))</title>
 
         <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
-        <link rel="preload" as="style" href="https://fonts.bunny.net/css?family=electrolize:400|lato:400,700&display=swap">
-        <link rel="stylesheet" href="https://fonts.bunny.net/css?family=electrolize:400|lato:400,700&display=swap">
-        @if (request()->routeIs('home'))
-            <link rel="preload" as="image" href="{{ asset('images/home-hero-poster.webp') }}" fetchpriority="high">
-        @endif
+        <link rel="preload" as="style" href="https://fonts.bunny.net/css?family=electrolize:400|lato:400,700|space-grotesk:400,500,700&display=swap">
+        <link rel="stylesheet" href="https://fonts.bunny.net/css?family=electrolize:400|lato:400,700|space-grotesk:400,500,700&display=swap">
 
         @vite(['resources/css/site.css', 'resources/js/site.js'])
     </head>

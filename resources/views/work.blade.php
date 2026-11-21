@@ -18,12 +18,7 @@
         'hospitality' => 'HOSPITALITY',
         'education' => 'EDUCATION',
         'fintech-banking' => 'FINTECH & BANKING',
-        'retail-ecommerce' => 'RETAIL & ECOMERCE',
-    ];
-
-    $filterGroups = [
-        ['key' => 'type', 'label' => 'DELIVERABLE TYPE', 'options' => $deliverableTypes, 'gap' => 'xl:gap-[clamp(6px,0.521vw,10px)]'],
-        ['key' => 'industry', 'label' => 'INDUSTRY', 'options' => $industries, 'gap' => 'xl:gap-[clamp(8px,0.677vw,13px)]'],
+        'retail-ecommerce' => 'RETAIL & ECOMMERCE',
     ];
 
     $projects = [
@@ -259,159 +254,217 @@
 
 @section('content')
     @php
-        $showroom = array_map(fn (array $project): array => [
-            'name' => $project['name'],
-            'category' => $project['category'],
-            'description' => $highlight($project['description']),
-            'tags' => $project['tags'],
-            'image' => $project['image_url'],
-            'pdf' => $project['has_case_study'] ? $project['pdf_url'] : null,
-            'url' => $project['url'] ?? null,
-            'domain' => isset($project['url']) ? preg_replace('/^www\./', '', parse_url($project['url'], PHP_URL_HOST)) : \Illuminate\Support\Str::slug($project['name']).'.com',
-        ], $projects);
-        $first = $showroom[0];
-        $arrowIcon = '<svg class="size-[18px] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10"/></svg>';
+        $categories = collect($projects)->countBy('category')->all();
+        $caseStudyCount = count(array_filter($projects, fn (array $project): bool => $project['has_case_study']));
+        $domain = fn (array $project): string => isset($project['url']) ? preg_replace('/^www\./', '', parse_url($project['url'], PHP_URL_HOST)) : \Illuminate\Support\Str::slug($project['name']).'.com';
+
+        $label = 'text-[11px] leading-4 tracking-[0.12em] uppercase';
+        $muted = 'text-[#808080]';
+        $chip = 'border border-black/10 bg-[#f5f5f7] px-2 py-1 text-[11px] tracking-[0.12em] uppercase';
+        $filterButton = 'cursor-pointer border-2 border-black/20 bg-white px-4 py-2 text-xs tracking-[0.08em] uppercase transition-colors hover:border-black aria-pressed:border-eccentric-blue aria-pressed:bg-eccentric-blue aria-pressed:text-white';
+        $field = 'mt-1.5 block w-full border border-black/20 bg-[#f5f5f7] px-4 py-3 text-sm normal-case tracking-normal text-black transition-colors placeholder:text-[#9a9aa0] focus:border-eccentric-blue focus:bg-white focus:outline-none';
+        $svg = fn (string $path, string $classes = 'size-[18px]'): string => '<svg class="'.$classes.' shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="'.$path.'"/></svg>';
+        $arrowPath = 'M4 12h16M14 6l6 6-6 6';
+        $externalPath = 'M6 18 18 6M8 6h10v10';
     @endphp
 
-    {{-- ============ HERO ============ --}}
-    <section class="relative overflow-hidden bg-white py-16 font-electrolize text-black md:pt-[72px] md:pb-14">
-        <div class="services-hero absolute inset-0" aria-hidden="true"></div>
-        <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <p class="mb-6 text-[11px] leading-[1.3] tracking-[0.15em] uppercase">Work <span class="mx-1 text-eccentric-blue">/</span> Showroom</p>
-            <span class="mb-6 block h-1 w-[72px] bg-eccentric-blue"></span>
-            <h1 class="mb-5 max-w-[760px] text-4xl leading-[1.1] sm:text-5xl">Pick a project.<br><span class="text-eccentric-blue">See how it was built.</span></h1>
-            <p class="max-w-[520px] leading-[1.6]">{{ count($projects) }} live builds in one viewer. Choose from the list, or let the showroom play through them.</p>
+    <div class="font-space text-black">
+        {{-- ============ META STRIP ============ --}}
+        <div class="border-b border-black/10 bg-[#f5f5f7]">
+            <div class="{{ $label }} {{ $muted }} mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-12">
+                <div class="flex items-center gap-3">
+                    <span class="inline-block size-2 bg-eccentric-blue"></span>
+                    <span class="font-semibold text-black">Work // Production records</span>
+                    <span class="hidden text-black/20 sm:inline">|</span>
+                    <span class="hidden sm:inline">Live builds only</span>
+                </div>
+                <span class="text-black">{{ count($projects) }} projects // {{ $caseStudyCount }} case studies</span>
+            </div>
         </div>
-    </section>
 
-    {{-- ============ SHOWROOM ============ --}}
-    <section id="showroom" class="scroll-mt-6 bg-white pb-16 font-electrolize text-black md:pb-24" aria-label="Project showroom">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="grid border border-black bg-white lg:grid-cols-[340px_1fr]" data-showroom data-reveal>
-                <ul class="flex overflow-x-auto border-b border-black lg:block lg:overflow-visible lg:border-r lg:border-b-0" role="tablist" aria-label="Projects">
-                    @foreach ($showroom as $index => $item)
-                        <li class="shrink-0 lg:shrink">
-                            <button type="button" role="tab" aria-selected="{{ $loop->first ? 'true' : 'false' }}" id="showroom-tab-{{ $index }}" aria-controls="showroom-stage"
-                                class="group relative grid w-full min-w-[190px] cursor-pointer grid-cols-[40px_1fr] gap-x-1.5 border-r border-black/14 bg-white px-5 py-[11px] text-left transition-colors hover:bg-[#f6f6f6] aria-selected:bg-black aria-selected:text-white lg:min-w-0 lg:border-r-0 lg:border-b"
-                                data-showroom-tab
-                                data-name="{{ $item['name'] }}" data-category="{{ $item['category'] }}" data-description="{{ $item['description'] }}"
-                                data-tags="{{ implode('|', $item['tags']) }}" data-image="{{ $item['image'] }}" data-domain="{{ $item['domain'] }}"
-                                data-pdf="{{ $item['pdf'] }}" data-url="{{ $item['url'] }}">
-                                <span class="absolute inset-y-0 left-0 w-1.5 bg-eccentric-blue opacity-0 group-aria-selected:opacity-100" aria-hidden="true"></span>
-                                <span class="self-center text-xs tracking-[0.12em] opacity-50 group-aria-selected:opacity-80">{{ sprintf('%02d', $index + 1) }}</span>
-                                <span class="text-lg leading-[1.2]">{{ $item['name'] }}</span>
-                                <span class="col-start-2 text-[11px] tracking-[0.15em] uppercase opacity-60 group-aria-selected:opacity-80">{{ $item['category'] }}</span>
-                                <span class="absolute bottom-0 left-0 h-[3px] w-0 bg-eccentric-blue" data-showroom-bar aria-hidden="true"></span>
-                            </button>
-                        </li>
-                    @endforeach
-                </ul>
-
-                <div id="showroom-stage" role="tabpanel" class="showroom-stage relative flex flex-col justify-between gap-8 p-5 sm:p-10" data-showroom-stage>
-                    <div class="border-2 border-black bg-white shadow-[6px_6px_0_#000] sm:shadow-[12px_12px_0_#000]">
-                        <div class="flex h-8 items-center gap-2 border-b-2 border-black px-3">
-                            <u class="block size-2.5 border-2 border-black"></u><u class="block size-2.5 border-2 border-black"></u><u class="block size-2.5 border-2 border-black"></u>
-                            <span class="ml-auto text-[11px] tracking-[0.12em] uppercase" data-showroom-domain>{{ $first['domain'] }}</span>
-                        </div>
-                        <img src="{{ $first['image'] }}" alt="{{ $first['name'] }} website preview" class="block aspect-[2.1/1] w-full object-cover object-top transition-opacity duration-300" data-showroom-image width="1200" height="571">
+        {{-- ============ HERO & FILTERS ============ --}}
+        <section class="border-b border-black/10 bg-white" aria-labelledby="work-heading">
+            <div class="mx-auto max-w-7xl px-4 pt-16 pb-14 sm:px-6 lg:px-12">
+                <div class="grid grid-cols-1 items-end gap-8 lg:grid-cols-12">
+                    <div class="flex flex-col gap-4 lg:col-span-8">
+                        <span class="{{ $label }} inline-flex items-center gap-2 self-start border border-black/10 bg-[#f5f5f7] px-2.5 py-1 text-eccentric-blue">
+                            {!! $svg('M3 5h18v14H3zM7 10l2.5 2L7 14M12 14h5', 'size-3.5') !!} Work // Case studies
+                        </span>
+                        <h1 id="work-heading" class="text-4xl leading-tight font-bold tracking-tight uppercase sm:text-5xl lg:text-[64px]">
+                            Pick a project.<br>
+                            <span class="text-eccentric-blue">See how it was built.</span>
+                        </h1>
+                        <p class="max-w-2xl text-lg leading-relaxed {{ $muted }}">{{ count($projects) }} live builds in one place. Filter by category, open the case study, or visit the live website.</p>
                     </div>
 
-                    <div class="grid items-end gap-6 lg:grid-cols-[1fr_auto]">
-                        <div>
-                            <p class="text-[11px] leading-[1.3] tracking-[0.15em] uppercase">Case Study <span class="mx-1 text-eccentric-blue">/</span> <span data-showroom-category>{{ $first['category'] }}</span></p>
-                            <h2 class="mt-1.5 mb-2.5 text-[28px] leading-[1.2] sm:text-4xl" data-showroom-name>{{ $first['name'] }}</h2>
-                            <p class="mb-3.5 max-w-[520px] text-[15px] leading-[1.6]" data-showroom-description>{!! $first['description'] !!}</p>
-                            <ul class="flex flex-wrap gap-1.5" data-showroom-tags>
-                                @foreach ($first['tags'] as $tag)
-                                    <li class="border border-black/14 bg-white px-2.5 py-1 text-xs tracking-[0.05em]">{{ $tag }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        <div>
-                            <div class="flex flex-wrap gap-2">
-                                <button type="button" class="inline-flex cursor-pointer items-center gap-2.5 border-2 border-eccentric-blue bg-eccentric-blue px-[22px] py-3 tracking-[0.02em] text-white transition-colors hover:border-black hover:bg-black disabled:cursor-default disabled:border-black/20 disabled:bg-black/20" data-showroom-case-study data-case-study-trigger data-project-name="{{ $first['name'] }}" data-pdf-url="{{ $first['pdf'] }}" @disabled(! $first['pdf'])>
-                                    <span data-showroom-case-study-label>{{ $first['pdf'] ? 'View Case Study' : 'Case study coming soon' }}</span> {!! $arrowIcon !!}
-                                </button>
-                                <a href="{{ $first['url'] ?? '#' }}" target="_blank" rel="noopener" @class(['inline-flex items-center gap-2.5 border-2 border-black bg-white px-[22px] py-3 tracking-[0.02em] transition-colors hover:bg-black hover:text-white', 'hidden' => ! $first['url']]) data-showroom-visit>Visit Web {!! $arrowIcon !!}</a>
+                    <div class="flex flex-col gap-3 lg:col-span-4 lg:items-end">
+                        <div class="w-full border border-black/10 bg-[#f5f5f7] p-4 lg:max-w-xs">
+                            <div class="{{ $label }} {{ $muted }} mb-2 flex items-center justify-between">
+                                <span>Portfolio stats</span>
+                                <span class="text-eccentric-blue">Live</span>
                             </div>
-                            <div class="mt-4 flex gap-2">
-                                @foreach (['prev' => ['Previous project', 'M15 5 8 12l7 7'], 'next' => ['Next project', 'M9 5l7 7-7 7']] as $direction => [$label, $path])
-                                    <button type="button" class="grid size-11 cursor-pointer place-items-center border-2 border-black bg-white hover:bg-black hover:text-white" aria-label="{{ $label }}" data-showroom-{{ $direction }}>
-                                        <svg class="size-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="{{ $path }}"/></svg>
-                                    </button>
-                                @endforeach
-                                <button type="button" class="grid size-11 cursor-pointer place-items-center border-2 border-black bg-white hover:bg-black hover:text-white" aria-label="Pause autoplay" data-showroom-toggle>
-                                    <svg class="size-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true" data-showroom-pause-icon><path d="M8 5v14M16 5v14"/></svg>
-                                    <svg class="hidden size-[18px]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-showroom-play-icon><path d="M7 4l12 8-12 8z"/></svg>
-                                </button>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <p class="text-3xl font-bold">{{ count($projects) }}</p>
+                                    <p class="{{ $label }} {{ $muted }}">Live builds</p>
+                                </div>
+                                <div>
+                                    <p class="text-3xl font-bold text-eccentric-blue">{{ $caseStudyCount }}</p>
+                                    <p class="{{ $label }} {{ $muted }}">Case studies</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    {{-- ============ NAME TICKER ============ --}}
-    <div class="overflow-hidden border-y border-black bg-white py-[18px] font-electrolize whitespace-nowrap" aria-hidden="true">
-        <div class="marquee-track text-2xl tracking-[0.04em]">
-            @foreach ([1, 2] as $copy)
+                <div class="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-black/10 pt-6">
+                    <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Filter projects by category">
+                        <button type="button" class="{{ $filterButton }}" aria-pressed="true" data-work-filter="all">All work [{{ sprintf('%02d', count($projects)) }}]</button>
+                        @foreach ($categories as $category => $total)
+                            <button type="button" class="{{ $filterButton }}" aria-pressed="false" data-work-filter="{{ $category }}">{{ $category }} [{{ sprintf('%02d', $total) }}]</button>
+                        @endforeach
+                    </div>
+                    <span class="{{ $label }} {{ $muted }} hidden items-center gap-2 md:flex">
+                        {!! $svg('M3 5h18l-7 8v6l-4 2v-8z', 'size-3.5') !!} Filter by category
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        {{-- ============ CASE STUDIES ============ --}}
+        <section id="showroom" class="scroll-mt-6 bg-white py-14" aria-label="Projects">
+            <div class="mx-auto flex max-w-7xl flex-col gap-16 px-4 sm:px-6 lg:px-12">
                 @foreach ($projects as $project)
-                    <span>{{ $project['name'] }}</span><span class="text-eccentric-blue">/</span>
+                    @php $isBlue = $loop->odd; @endphp
+                    <article class="border-2 border-black bg-white" aria-labelledby="project-{{ $project['index'] }}-title" data-work-category="{{ $project['category'] }}">
+                        <div class="flex flex-wrap items-center justify-between gap-4 border-b-2 border-black bg-[#f5f5f7] px-4 py-4 sm:px-6">
+                            <div class="flex flex-wrap items-center gap-3">
+                                <span @class([$label, 'px-2 py-0.5 font-semibold text-white', 'bg-eccentric-blue' => $isBlue, 'bg-black' => ! $isBlue])>Project {{ $project['index'] }}</span>
+                                <h2 id="project-{{ $project['index'] }}-title" class="text-sm font-semibold tracking-[0.06em] uppercase">{{ $project['name'] }}: {{ $project['category'] }}</h2>
+                            </div>
+                            <div class="{{ $label }} {{ $muted }} flex items-center gap-4">
+                                <span>{{ $domain($project) }}</span>
+                                <span class="size-1.5 bg-black"></span>
+                                <span class="text-eccentric-blue">{{ $project['has_case_study'] ? 'Case study available' : 'Case study coming soon' }}</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 gap-10 p-5 sm:p-6 lg:grid-cols-12 lg:p-10">
+                            {{-- Details --}}
+                            <div @class(['flex flex-col justify-between gap-8 lg:col-span-7', 'lg:order-1' => $loop->odd, 'lg:order-2' => $loop->even])>
+                                <div class="flex flex-col gap-6">
+                                    <div class="border-l-2 border-black pl-4">
+                                        <span class="{{ $label }} {{ $muted }} mb-1 block">Project overview</span>
+                                        <p class="leading-relaxed">{!! $highlight($project['description']) !!}</p>
+                                    </div>
+
+                                    <div class="border-l-2 border-eccentric-blue pl-4">
+                                        <span class="{{ $label }} mb-1 block text-eccentric-blue">What we delivered</span>
+                                        <p class="text-sm leading-relaxed tracking-[0.08em] uppercase">{{ implode(' · ', array_map(fn (string $type): string => $deliverableTypes[$type], $project['types'])) }}@if ($project['industries'] !== []) <span class="{{ $muted }}">// {{ implode(', ', array_map(fn (string $industry): string => $industries[$industry], $project['industries'])) }}</span>@endif</p>
+                                    </div>
+
+                                    <div class="border border-black/20 bg-[#f5f5f7] p-5">
+                                        <div class="{{ $label }} mb-4 flex items-center justify-between gap-3 border-b border-black/10 pb-2">
+                                            <span class="{{ $muted }}">Build specification // {{ $project['name'] }}</span>
+                                            <span class="text-eccentric-blue">{{ $project['category'] }}</span>
+                                        </div>
+                                        <div class="{{ $label }} grid grid-cols-1 items-center gap-2 text-center sm:grid-cols-[1fr_auto_1fr_auto_1fr]">
+                                            @foreach ($project['tags'] as $tag)
+                                                @php $isCore = $loop->iteration === 2; @endphp
+                                                <div @class(['bg-white p-2', 'border-2 border-eccentric-blue' => $isCore, 'border border-black/30' => ! $isCore])>
+                                                    <span @class(['block text-[10px]', 'text-eccentric-blue' => $isCore, $muted => ! $isCore])>Layer {{ sprintf('%02d', $loop->iteration) }}</span>
+                                                    <span class="font-semibold">{{ $tag }}</span>
+                                                </div>
+                                                @unless ($loop->last)
+                                                    <span class="hidden font-bold text-eccentric-blue sm:inline" aria-hidden="true">---&gt;</span>
+                                                @endunless
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <ul class="flex flex-wrap items-center gap-3 border-t border-black/10 pt-4">
+                                    @foreach ($project['types'] as $type)
+                                        <li class="{{ $chip }}">{{ $deliverableTypes[$type] }}</li>
+                                    @endforeach
+                                    @foreach ($project['tags'] as $tag)
+                                        <li class="{{ $chip }}">{{ $tag }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+
+                            {{-- Preview & actions --}}
+                            <div @class(['order-first flex flex-col gap-6 lg:col-span-5', 'lg:order-2' => $loop->odd, 'lg:order-1' => $loop->even])>
+                                <div class="image-hover image-hover-subtle relative overflow-hidden border border-black/20 bg-black">
+                                    <img src="{{ $project['image_url'] }}" alt="{{ $project['name'] }} website preview" width="1200" height="571" @unless ($loop->first) loading="lazy" @endunless decoding="async" class="block aspect-[2.1/1] w-full object-cover object-top">
+                                    <span class="{{ $label }} absolute bottom-3 left-3 border border-black bg-white/95 px-3 py-1">{{ $domain($project) }}</span>
+                                </div>
+
+                                <dl class="grid grid-cols-[1.7fr_1fr_1fr] gap-2 sm:gap-3">
+                                    @foreach ([
+                                        ['Category', $project['category'], true],
+                                        ['Case study', $project['has_case_study'] ? 'PDF' : 'Soon', false],
+                                        ['Website', isset($project['url']) ? 'Live' : 'Private', false],
+                                    ] as [$term, $value, $isBlueValue])
+                                        <div class="flex min-w-0 flex-col-reverse border border-black bg-white p-3 sm:p-4">
+                                            <dt class="{{ $label }} {{ $muted }} mt-1">{{ $term }}</dt>
+                                            <dd @class(['text-sm font-bold uppercase [overflow-wrap:anywhere] sm:text-lg lg:text-base xl:text-lg', 'text-eccentric-blue' => $isBlueValue])>{{ $value }}</dd>
+                                        </div>
+                                    @endforeach
+                                </dl>
+
+                                <div class="flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
+                                    <button type="button" class="flex flex-1 cursor-pointer items-center justify-center gap-2 bg-black py-3 text-xs tracking-[0.08em] text-white uppercase transition-colors hover:bg-eccentric-blue disabled:cursor-default disabled:bg-black/20" data-case-study-trigger data-project-name="{{ $project['name'] }}" data-pdf-url="{{ $project['has_case_study'] ? $project['pdf_url'] : '' }}" @disabled(! $project['has_case_study'])>
+                                        <span>{{ $project['has_case_study'] ? 'View Case Study' : 'Case study coming soon' }}</span>{!! $svg($arrowPath) !!}
+                                    </button>
+                                    @isset($project['url'])
+                                        <a href="{{ $project['url'] }}" target="_blank" rel="noopener" class="flex flex-1 items-center justify-center gap-2 border-2 border-black bg-white py-2.5 text-xs tracking-[0.08em] uppercase transition-colors hover:bg-black hover:text-white">
+                                            Visit Web {!! $svg($externalPath) !!}
+                                        </a>
+                                    @endisset
+                                </div>
+                            </div>
+                        </div>
+                    </article>
                 @endforeach
-            @endforeach
-        </div>
-    </div>
-
-    <x-case-study-modal />
-
-    <x-work-testimonials />
-
-    {{-- ============ CLOSING BAND ============ --}}
-    <section class="bg-black py-16 font-electrolize text-white md:py-24">
-        <div class="mx-auto grid max-w-7xl items-center gap-8 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
-            <div class="lg:col-span-7" data-reveal>
-                <span class="mb-6 block h-1 w-[72px] bg-eccentric-blue"></span>
-                <h2 class="mb-4 max-w-[620px] text-[28px] leading-[1.2] sm:text-4xl">Want to see work in your industry?</h2>
-                <p class="mb-8 max-w-[460px] leading-[1.6] opacity-85">Ask on the call. We’ll pull the closest match and walk you through how it was built.</p>
-                <a href="#contact" class="inline-flex items-center gap-2.5 border-2 border-white bg-white px-[22px] py-3 tracking-[0.02em] text-black transition-colors hover:border-eccentric-blue hover:bg-eccentric-blue hover:text-white">Book a Call {!! $arrowIcon !!}</a>
             </div>
-            <div class="showroom-big-count text-[clamp(100px,14vw,200px)] leading-[0.8] tracking-[-0.04em] lg:col-span-5 lg:text-right" aria-hidden="true">{{ count($projects) }}</div>
-        </div>
-    </section>
-    {{-- ============ CONTACT SECTION (FROM STANDALONE HTML) ============ --}}
-    <section class="py-20 sm:py-24 bg-white font-electrolize" id="contact">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-                {{-- Left Column: Headline and Checkmarks --}}
-                <div class="lg:col-span-5" data-reveal>
-                    <span class="block w-18 h-1 bg-eccentric-blue mb-6"></span>
-                    <h2 class="text-3xl sm:text-4xl text-black font-normal mb-5">
-                        Let’s discuss your needs.
-                    </h2>
-                    <p class="text-base text-black/75 leading-relaxed max-w-md mb-8">
-                        Want to see work in your industry specifically? Ask on the call. We’ll pull the closest match.
-                    </p>
+        </section>
 
-                    <ul class="space-y-0">
-                        <li class="flex items-start gap-3.5 py-3.5 border-t border-black/15 text-sm text-black/85">
-                            <svg class="size-4.5 text-eccentric-blue shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M4 12l6 6L20 6"/>
-                            </svg>
-                            <span>Reply within one business day, in any timezone</span>
-                        </li>
-                        <li class="flex items-start gap-3.5 py-3.5 border-t border-black/15 text-sm text-black/85">
-                            <svg class="size-4.5 text-eccentric-blue shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M4 12l6 6L20 6"/>
-                            </svg>
-                            <span>Industry-matched case studies shared on the call</span>
-                        </li>
-                        <li class="flex items-start gap-3.5 py-3.5 border-t border-b border-black/15 text-sm text-black/85">
-                            <svg class="size-4.5 text-eccentric-blue shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M4 12l6 6L20 6"/>
-                            </svg>
-                            <span>Clear scope and timeline before any commitment</span>
-                        </li>
+        <x-case-study-modal />
+
+        <x-work-testimonials />
+
+        {{-- ============ INDUSTRY CTA ============ --}}
+        <section class="border-b border-black/10 bg-white py-16">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+                <div class="flex flex-col items-center justify-between gap-8 border-2 border-black bg-white p-6 sm:p-8 lg:flex-row lg:p-12" data-reveal>
+                    <div class="flex max-w-2xl flex-col gap-3">
+                        <span class="{{ $label }} inline-flex items-center gap-2 text-eccentric-blue"><span class="size-2 bg-eccentric-blue"></span>Industry-matched work</span>
+                        <h2 class="text-3xl leading-tight font-bold uppercase sm:text-4xl">Want to see work in your industry?</h2>
+                        <p class="{{ $muted }}">Ask on the call. We’ll pull the closest match and walk you through how it was built.</p>
+                    </div>
+                    <div class="flex w-full shrink-0 flex-col items-stretch gap-4 sm:flex-row sm:items-center lg:w-auto">
+                        <a href="#contact" class="border-2 border-eccentric-blue bg-eccentric-blue px-6 py-4 text-center text-xs tracking-[0.08em] text-white uppercase transition-colors hover:bg-white hover:text-eccentric-blue">Book a Call</a>
+                        <a href="{{ route('services') }}" class="border-2 border-black bg-white px-6 py-4 text-center text-xs tracking-[0.08em] uppercase transition-colors hover:bg-black hover:text-white">Explore Services</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {{-- ============ CONTACT ============ --}}
+        <section id="contact" class="scroll-mt-6 bg-[#f5f5f7] py-20" aria-labelledby="work-contact-heading">
+            <div class="mx-auto grid max-w-7xl grid-cols-1 items-start gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:gap-16 lg:px-12">
+                <div class="lg:col-span-5" data-reveal>
+                    <span class="{{ $label }} mb-3 block text-eccentric-blue">Project intake // Contact</span>
+                    <h2 id="work-contact-heading" class="mb-5 text-3xl leading-tight font-bold uppercase sm:text-4xl">Let’s discuss your needs.</h2>
+                    <p class="mb-8 max-w-md leading-relaxed {{ $muted }}">Want to see work in your industry specifically? Ask on the call. We’ll pull the closest match.</p>
+
+                    <ul class="space-y-3">
+                        @foreach (['Reply within one business day, in any timezone', 'Industry-matched case studies shared on the call', 'Clear scope and timeline before any commitment'] as $promise)
+                            <li class="flex items-center gap-3 border border-black/10 bg-white p-4 text-sm">
+                                <span class="text-eccentric-blue">{!! $svg('M4 12l6 6L20 6') !!}</span>{{ $promise }}
+                            </li>
+                        @endforeach
                     </ul>
 
                     <div class="mt-8">
@@ -419,107 +472,59 @@
                     </div>
                 </div>
 
-                {{-- Right Column: Form Card --}}
-                <div class="lg:col-span-7" data-reveal>
-                    <div class="border border-black border-t-4 border-t-eccentric-blue p-8 sm:p-10 bg-white">
-                        <h3 class="text-2xl text-black font-normal mb-1">Tell us about your project</h3>
-                        <p class="text-sm text-black/70 mb-6">We’ll take it from there.</p>
+                <div class="border-2 border-black bg-white p-6 sm:p-10 lg:col-span-7" data-reveal>
+                    <h3 class="mb-1 text-2xl uppercase">Tell us about your project</h3>
+                    <p class="mb-6 text-sm {{ $muted }}">We’ll take it from there.</p>
 
-                        <form action="{{ route('contact.store') }}" method="POST" class="space-y-4">
-                            @csrf
-                            <input type="hidden" name="return_to" value="work">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs uppercase tracking-wider text-black/70 mb-1.5" for="fName">Full name *</label>
-                                    <input
-                                        type="text"
-                                        id="fName"
-                                        name="name"
-                                        value="{{ old('name') }}"
-                                        placeholder="Your name"
-                                        required
-                                        maxlength="255"
-                                        autocomplete="name"
-                                        class="w-full px-3.5 py-2.5 text-sm bg-neutral-50 border border-black/30 rounded-none focus:outline-hidden focus:border-eccentric-blue focus:bg-white transition-colors"
-                                    >
-                                </div>
-                                <div>
-                                    <label class="block text-xs uppercase tracking-wider text-black/70 mb-1.5" for="fEmail">Email address *</label>
-                                    <input
-                                        type="email"
-                                        id="fEmail"
-                                        name="email"
-                                        value="{{ old('email') }}"
-                                        placeholder="you@company.com"
-                                        required
-                                        maxlength="255"
-                                        autocomplete="email"
-                                        class="w-full px-3.5 py-2.5 text-sm bg-neutral-50 border border-black/30 rounded-none focus:outline-hidden focus:border-eccentric-blue focus:bg-white transition-colors"
-                                    >
-                                </div>
-                            </div>
+                    <form action="{{ route('contact.store') }}" method="POST" class="space-y-4">
+                        @csrf
+                        <input type="hidden" name="return_to" value="work">
 
-                            <div>
-                                <label class="block text-xs uppercase tracking-wider text-black/70 mb-1.5" for="fIndustry">Industry</label>
-                                <select
-                                    id="fIndustry"
-                                    name="industry"
-                                    class="w-full px-3.5 py-2.5 text-sm bg-neutral-50 border border-black/30 rounded-none focus:outline-hidden focus:border-eccentric-blue focus:bg-white transition-colors"
-                                >
-                                    <option value="">Choose your industry</option>
-                                    @foreach (\App\Http\Requests\StoreContactMessageRequest::INDUSTRIES as $value => $label)
-                                        <option value="{{ $value }}" @selected(old('industry') === $value)>{{ $label }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <label class="{{ $label }} {{ $muted }} block">Full name *
+                                <input type="text" name="name" value="{{ old('name') }}" placeholder="Your name" required maxlength="255" autocomplete="name" class="{{ $field }}">
+                            </label>
+                            <label class="{{ $label }} {{ $muted }} block">Email address *
+                                <input type="email" name="email" value="{{ old('email') }}" placeholder="you@company.com" required maxlength="255" autocomplete="email" class="{{ $field }}">
+                            </label>
+                        </div>
 
-                            <div>
-                                <label class="block text-xs uppercase tracking-wider text-black/70 mb-1.5" for="fBrief">Project brief *</label>
-                                <textarea
-                                    id="fBrief"
-                                    name="message"
-                                    rows="4"
-                                    placeholder="What friction do you want gone? Share the goal and the problem you’re solving."
-                                    required
-                                    maxlength="5000"
-                                    class="w-full px-3.5 py-2.5 text-sm bg-neutral-50 border border-black/30 rounded-none focus:outline-hidden focus:border-eccentric-blue focus:bg-white transition-colors resize-y"
-                                >{{ old('message') }}</textarea>
-                            </div>
+                        <label class="{{ $label }} {{ $muted }} block">Industry
+                            <select name="industry" class="{{ $field }}">
+                                <option value="">Choose your industry</option>
+                                @foreach (\App\Http\Requests\StoreContactMessageRequest::INDUSTRIES as $value => $industryLabel)
+                                    <option value="{{ $value }}" @selected(old('industry') === $value)>{{ $industryLabel }}</option>
+                                @endforeach
+                            </select>
+                        </label>
 
-                            <div class="flex items-center gap-2 pt-1">
-                                <input type="checkbox" id="fTerms" required class="size-4 rounded-none border-black text-eccentric-blue focus:ring-0">
-                                <label for="fTerms" class="text-xs text-black/80">
-                                    I understand and agree to the terms &amp; conditions.
-                                </label>
-                            </div>
+                        <label class="{{ $label }} {{ $muted }} block">Project brief *
+                            <textarea name="message" rows="4" placeholder="What friction do you want gone? Share the goal and the problem you’re solving." required maxlength="5000" class="{{ $field }} resize-y">{{ old('message') }}</textarea>
+                        </label>
 
-                            <x-recaptcha />
+                        <div class="flex items-center gap-2 pt-1">
+                            <input type="checkbox" id="work-terms" required class="size-4 shrink-0 accent-eccentric-blue">
+                            <label for="work-terms" class="text-xs text-black/80">I understand and agree to the terms &amp; conditions.</label>
+                        </div>
 
-                            <div class="pt-2">
-                                <button
-                                    type="submit"
-                                    class="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 bg-eccentric-blue text-white text-sm font-normal tracking-wide border-2 border-eccentric-blue hover:bg-black hover:border-black transition-colors duration-200 cursor-pointer"
-                                >
-                                    <span>Submit Now</span>
-                                    <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
-                                        <path d="M6 18 18 6M8 6h10v10"/>
-                                    </svg>
-                                </button>
-                            </div>
+                        <x-recaptcha />
 
-                            @if (session('status') === 'contact-message-sent')
-                                <p class="border-l-4 border-black bg-eccentric-blue px-3.5 py-3 text-sm text-white" role="status">Thank you. Your project details are in. We'll be in touch shortly.</p>
-                            @elseif ($errors->any())
-                                <ul class="border-l-4 border-[#d33] bg-[#fdf2f2] px-3.5 py-3 text-sm text-[#a11]" role="alert">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            @endif
-                        </form>
-                    </div>
+                        <button type="submit" class="flex w-full cursor-pointer items-center justify-center gap-2 bg-eccentric-blue py-4 text-xs tracking-[0.08em] text-white uppercase transition-colors hover:bg-black">
+                            <span>Submit Now</span>{!! $svg($externalPath) !!}
+                        </button>
+
+                        @if (session('status') === 'contact-message-sent')
+                            <p class="border-l-4 border-black bg-eccentric-blue px-3.5 py-3 text-sm text-white" role="status">Thank you. Your project details are in. We'll be in touch shortly.</p>
+                        @elseif ($errors->any())
+                            <ul class="border-l-4 border-[#d33] bg-[#fdf2f2] px-3.5 py-3 text-sm text-[#a11]" role="alert">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </form>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 @endsection

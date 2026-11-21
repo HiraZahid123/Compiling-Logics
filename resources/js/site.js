@@ -16,6 +16,18 @@ if (menuToggle && menu) {
 }
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const latencyReadout = document.querySelector('[data-latency]');
+
+if (latencyReadout && !prefersReducedMotion) {
+    const latencies = ['0.04ms', '0.03ms', '0.05ms', '0.04ms'];
+    let latencyIndex = 0;
+
+    setInterval(() => {
+        latencyIndex = (latencyIndex + 1) % latencies.length;
+        latencyReadout.textContent = `Latency: ${latencies[latencyIndex]}`;
+    }, 4000);
+}
+
 const heroVideo = document.querySelector('[data-hero-video]');
 
 if (heroVideo && !prefersReducedMotion) {
@@ -234,6 +246,23 @@ if (pillarChips.length > 0) {
     document.querySelectorAll('[data-pillar-section]').forEach((section) => pillarObserver.observe(section));
 }
 
+const workFilters = document.querySelectorAll('[data-work-filter]');
+
+if (workFilters.length > 0) {
+    const workProjects = document.querySelectorAll('[data-work-category]');
+
+    workFilters.forEach((button) => {
+        button.addEventListener('click', () => {
+            const category = button.dataset.workFilter;
+
+            workFilters.forEach((other) => other.setAttribute('aria-pressed', String(other === button)));
+            workProjects.forEach((project) => {
+                project.hidden = category !== 'all' && project.dataset.workCategory !== category;
+            });
+        });
+    });
+}
+
 document.querySelectorAll('[data-pick-pillar]').forEach((link) => {
     link.addEventListener('click', () => {
         document.querySelectorAll('[data-pillar-pick]').forEach((checkbox) => {
@@ -243,20 +272,6 @@ document.querySelectorAll('[data-pick-pillar]').forEach((link) => {
         });
     });
 });
-
-const recaptchaOverlay = document.querySelector('[data-recaptcha-fit]');
-
-if (recaptchaOverlay) {
-    const fitRecaptcha = () => {
-        const isOverlaid = window.matchMedia('(min-width: 768px)').matches;
-        const scale = Math.min(1, recaptchaOverlay.offsetParent?.offsetWidth / 1920 || 1);
-
-        recaptchaOverlay.style.transform = isOverlaid ? `scale(${scale})` : '';
-    };
-
-    window.addEventListener('resize', fitRecaptcha);
-    fitRecaptcha();
-}
 
 const sentPopup = document.querySelector('[data-sent-popup]');
 

@@ -4,11 +4,14 @@ it('renders the about page sections in order', function () {
     $this->get(route('about'))
         ->assertOk()
         ->assertSeeInOrder([
-            'Building Digital Solutions That Last.',
+            'Building Digital Solutions',
+            'That Last.',
             'Team that actually answers.',
-            'MISSION',
+            'Mission',
             'We work embedded inside your business',
-            'Great People. Better Solutions.',
+            'Trust', 'Quality', 'Timely Delivery',
+            'Great People.',
+            'Live Team', 'AI Chatbot',
             'Want the full story on a specific build?',
         ]);
 });

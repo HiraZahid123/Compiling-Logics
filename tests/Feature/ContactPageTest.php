@@ -13,6 +13,13 @@ it('renders the contact form', function () {
         ->assertSee('name="message"', escape: false);
 });
 
+it('lets the visitor pick the pillars they need help with', function () {
+    $html = $this->get(route('contact'))->getContent();
+
+    expect(substr_count($html, 'name="pillars[]"'))->toBe(6)
+        ->and($html)->not->toContain('name="return_to"');
+});
+
 it('confirms a sent message', function () {
     $this->withSession(['status' => 'contact-message-sent'])
         ->get(route('contact'))
