@@ -263,6 +263,16 @@ if (workFilters.length > 0) {
     });
 }
 
+const domainLabel = document.querySelector('[data-domain-label]');
+
+if (domainLabel) {
+    document.querySelectorAll('[data-domain-pick]').forEach((radio) => {
+        radio.addEventListener('change', () => {
+            domainLabel.textContent = `SELECTED: ${radio.value.toUpperCase()}`;
+        });
+    });
+}
+
 document.querySelectorAll('[data-pick-pillar]').forEach((link) => {
     link.addEventListener('click', () => {
         document.querySelectorAll('[data-pillar-pick]').forEach((checkbox) => {

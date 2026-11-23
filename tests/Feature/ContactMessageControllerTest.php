@@ -86,6 +86,34 @@ it('records the picked pillars and returns to the services contact section', fun
         ->toBe("Pillars of interest: Software Development, Design\n\nWe need a booking system.");
 });
 
+it('records the project details from the contact page form', function () {
+    $this->post(route('contact.store'), [
+        'name' => 'Ada Lovelace',
+        'email' => 'ada@example.com',
+        'company_domain' => 'vancehealth.org',
+        'pillars' => ['Healthcare Solution'],
+        'target_metric' => 'Cut claim checks from 72h to 3m',
+        'tech_stack' => 'PostgreSQL, AWS',
+        'timeline' => 'quarter',
+        'message' => 'We need an intake engine.',
+    ])->assertRedirect(route('contact'));
+
+    expect(ContactMessage::sole()->message)->toBe(implode("\n", [
+        'Company domain: vancehealth.org',
+        'Pillars of interest: Healthcare Solution',
+        'Bottleneck / target metric: Cut claim checks from 72h to 3m',
+        'Existing architecture & stack: PostgreSQL, AWS',
+        'Deployment target window: Q2 Strategic Implementation (60–90 Days)',
+    ])."\n\nWe need an intake engine.");
+});
+
+it('rejects a deployment window that is not on the list', function () {
+    $this->post(route('contact.store'), [...ContactMessage::factory()->raw(), 'timeline' => 'tomorrow'])
+        ->assertSessionHasErrors('timeline');
+
+    expect(ContactMessage::count())->toBe(0);
+});
+
 it('rejects an unknown return destination', function () {
     $this->post(route('contact.store'), [
         ...ContactMessage::factory()->raw(),

@@ -3,21 +3,21 @@
 use App\Models\Service;
 use App\Models\ServiceCategory;
 
-it('renders the contact form', function () {
+it('renders the contact form with the design fields', function () {
     $this->get(route('contact'))
         ->assertOk()
-        ->assertSee("Let's Build Something Great Together", escape: false)
+        ->assertSee('Initiate Architectural Inquiry.')
         ->assertSee('action="'.route('contact.store').'"', escape: false)
-        ->assertSee('name="name"', escape: false)
-        ->assertSee('name="email"', escape: false)
-        ->assertSee('name="message"', escape: false);
+        ->assertSeeInOrder(['name="name"', 'name="company_domain"', 'name="email"', 'name="pillars[]"', 'name="target_metric"', 'name="tech_stack"', 'name="timeline"', 'name="message"'], escape: false);
 });
 
-it('lets the visitor pick the pillars they need help with', function () {
+it('offers six domains of interest with the first one picked by default', function () {
     $html = $this->get(route('contact'))->getContent();
 
     expect(substr_count($html, 'name="pillars[]"'))->toBe(6)
-        ->and($html)->not->toContain('name="return_to"');
+        ->and($html)->toMatch('/value="AI Agent Deployment"[^>]*checked/')
+        ->toContain('SELECTED: AI AGENT DEPLOYMENT')
+        ->not->toContain('name="return_to"');
 });
 
 it('confirms a sent message', function () {
