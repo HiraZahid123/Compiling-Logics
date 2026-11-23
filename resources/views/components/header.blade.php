@@ -17,14 +17,13 @@
                 <img src="{{ asset('images/logo-header.webp') }}" alt="Compiling Logics" class="block h-9 w-auto lg:h-11" width="196" height="48" fetchpriority="high">
             </a>
             <div class="hidden items-center gap-2 border border-black/10 bg-[#f5f5f7] px-3 py-1 xl:flex">
-                <span class="relative flex size-2"><span class="absolute inline-flex size-full animate-ping bg-eccentric-blue opacity-75"></span><span class="relative inline-flex size-2 bg-eccentric-blue"></span></span>
                 <span class="text-[10px] tracking-widest uppercase">Systems online · 24/7 accessible</span>
             </div>
         </div>
 
         <nav class="hidden h-full items-center gap-8 md:flex" aria-label="Main">
             @foreach ($navigationLinks as $link)
-                <a href="{{ $link['url'] }}" @if ($isCurrent($link)) aria-current="page" @endif class="flex h-full items-center border-b-2 border-transparent text-xs tracking-[0.08em] text-[#808080] uppercase transition-colors hover:text-black aria-[current=page]:border-eccentric-blue aria-[current=page]:text-black">{{ $link['label'] }}</a>
+                <a href="{{ $link['url'] }}" @if ($isCurrent($link)) aria-current="page" @endif class="flex h-full items-center text-xs tracking-[0.08em] text-[#808080] uppercase transition-colors hover:text-black aria-[current=page]:text-eccentric-blue">{{ $link['label'] }}</a>
             @endforeach
         </nav>
 
