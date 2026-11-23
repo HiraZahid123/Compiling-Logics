@@ -14,6 +14,63 @@
     --color-eccentric-blue: #0049fd;
     --color-on-brand: #f5f5f5;
 
+    /* Stitch design tokens (colours and type scale from the Stitch exports). */
+    --color-gray-subtle: #f5f5f7;
+    --color-deep-black: #000000;
+    --color-pure-white: #ffffff;
+    --color-technical-gray: #808080;
+    --color-gray-border: #e5e5e5;
+    --color-secondary: #5e5e5e;
+    --color-secondary-fixed-dim: #c6c6c6;
+    --color-on-surface: #1b1c1c;
+    --color-surface-container-low: #f5f3f3;
+    --color-surface-container: #efeded;
+    --color-inverse-surface: #303031;
+
+    --font-display-lg: var(--font-space);
+    --font-headline-lg: var(--font-space);
+    --font-headline-md: var(--font-space);
+    --font-headline-sm: var(--font-space);
+    --font-body-lg: var(--font-space);
+    --font-body-md: var(--font-space);
+    --font-body-sm: var(--font-space);
+    --font-label-md: var(--font-space);
+    --font-label-sm: var(--font-space);
+
+    --text-display-lg: 4rem;
+    --text-display-lg--line-height: 4.5rem;
+    --text-display-lg--letter-spacing: -0.04em;
+    --text-display-lg-mobile: 2.5rem;
+    --text-display-lg-mobile--line-height: 3rem;
+    --text-display-lg-mobile--letter-spacing: -0.02em;
+    --text-headline-lg: 2.25rem;
+    --text-headline-lg--line-height: 2.75rem;
+    --text-headline-lg--letter-spacing: -0.02em;
+    --text-headline-lg-mobile: 1.75rem;
+    --text-headline-lg-mobile--line-height: 2.25rem;
+    --text-headline-lg-mobile--letter-spacing: -0.01em;
+    --text-headline-md: 1.5rem;
+    --text-headline-md--line-height: 2rem;
+    --text-headline-md--letter-spacing: -0.01em;
+    --text-headline-sm: 1.25rem;
+    --text-headline-sm--line-height: 1.75rem;
+    --text-headline-sm--letter-spacing: 0em;
+    --text-body-lg: 1.125rem;
+    --text-body-lg--line-height: 1.75rem;
+    --text-body-lg--letter-spacing: 0em;
+    --text-body-md: 1rem;
+    --text-body-md--line-height: 1.5rem;
+    --text-body-md--letter-spacing: 0.01em;
+    --text-body-sm: 0.875rem;
+    --text-body-sm--line-height: 1.25rem;
+    --text-body-sm--letter-spacing: 0.01em;
+    --text-label-md: 0.75rem;
+    --text-label-md--line-height: 1rem;
+    --text-label-md--letter-spacing: 0.08em;
+    --text-label-sm: 0.625rem;
+    --text-label-sm--line-height: 0.875rem;
+    --text-label-sm--letter-spacing: 0.12em;
+
     --color-booking-accent: #a44756;
     --color-booking-border: #cfd6e5;
     --color-booking-step-border: #edeff5;
