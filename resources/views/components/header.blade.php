@@ -13,9 +13,8 @@
 <header class="relative z-40 border-b border-black/10 bg-white font-space text-black">
     <div class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:h-20 lg:px-12">
         <div class="flex shrink-0 items-center gap-8">
-            <a href="{{ route('home') }}" class="group flex items-center gap-3" aria-label="Compiling Logics home">
-                <img src="{{ asset('images/cl-mark.png') }}" alt="" class="h-8 w-auto" width="30" height="32">
-                <span class="text-lg tracking-wider uppercase transition-colors group-hover:text-eccentric-blue sm:text-xl">Compiling Logics</span>
+            <a href="{{ route('home') }}" class="block shrink-0" aria-label="Compiling Logics home">
+                <img src="{{ asset('images/logo-header.webp') }}" alt="Compiling Logics" class="block h-9 w-auto lg:h-11" width="196" height="48" fetchpriority="high">
             </a>
             <div class="hidden items-center gap-2 border border-black/10 bg-[#f5f5f7] px-3 py-1 xl:flex">
                 <span class="relative flex size-2"><span class="absolute inline-flex size-full animate-ping bg-eccentric-blue opacity-75"></span><span class="relative inline-flex size-2 bg-eccentric-blue"></span></span>
