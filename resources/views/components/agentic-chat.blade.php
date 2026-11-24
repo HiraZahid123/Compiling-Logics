@@ -15,7 +15,7 @@
     <button
         type="button"
         data-chat-toggle
-        aria-label="Open AI Chat Assistant"
+        aria-label="Chat with AI Agent"
         title="Chat with Compiling Logics AI"
         class="fixed bottom-5 right-5 z-[9998] size-14 rounded-full bg-eccentric-blue text-white shadow-2xl flex items-center justify-center cursor-pointer hover:scale-110 active:scale-95 transition-transform duration-200"
     >

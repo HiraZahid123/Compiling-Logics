@@ -14,7 +14,7 @@
     $solutions = [
         ['tag' => '01 // AI ASSISTANTS', 'title' => 'SMART AI ASSISTANTS', 'text' => 'AI helpers that handle everyday tasks for you, around the clock, while staying within the rules you set.', 'status' => 'READY TO WORK', 'url' => route('services').'#ai-agents-automation', 'icon' => 'M5 9h14v10H5zM12 4v5M9 13h1M14 13h1M9 16h6'],
         ['tag' => '02 // AUTOMATION', 'title' => 'WORKFLOWS ON AUTOPILOT', 'text' => 'We remove repetitive manual work by connecting your older systems, databases, and apps, so nothing gets lost or dropped.', 'status' => 'TESTED AND PROVEN', 'url' => route('services').'#ai-agents-automation', 'icon' => 'M4 4h6v6H4zM14 14h6v6h-6zM10 7h4v10'],
-        ['tag' => '03 // CUSTOM BUILDS', 'title' => 'CUSTOM SOFTWARE YOU CAN RELY ON', 'text' => 'Modern websites and cloud apps that are fast, dependable, and ready to grow along with your business.', 'status' => 'BUILT TO LAST', 'url' => route('services').'#software-development', 'icon' => 'M3 4h18v16H3zM7 9l3 3-3 3M13 15h4', 'featured' => true],
+        ['tag' => '03 // CUSTOM BUILDS', 'title' => 'CUSTOM SOFTWARE YOU CAN RELY ON', 'text' => 'Modern websites and cloud apps that are fast, dependable, and ready to grow along with your business.', 'status' => 'BUILT TO LAST', 'url' => route('services').'#software-development', 'icon' => 'M3 4h18v16H3zM7 9l3 3-3 3M13 15h4'],
         ['tag' => '04 // INDUSTRIES', 'title' => 'BUILT FOR YOUR INDUSTRY', 'text' => 'Ready-made solutions that meet the rules of your field, such as healthcare privacy (HIPAA), real estate listings, and restaurant and hotel checkout systems.', 'status' => 'RULES BUILT IN', 'url' => route('services').'#quality-assurance', 'icon' => 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM8.5 12l2.5 2.5 4.5-5'],
     ];
 
@@ -138,23 +138,11 @@
 
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
                     @foreach ($solutions as $solution)
-                        <a href="{{ $solution['url'] }}" @class([
-                            'group flex flex-col justify-between gap-8 bg-white p-6 transition-colors',
-                            'border-2 border-eccentric-blue' => $solution['featured'] ?? false,
-                            'border border-black hover:border-eccentric-blue' => ! ($solution['featured'] ?? false),
-                        ]) data-reveal>
+                        <a href="{{ $solution['url'] }}" class="group flex flex-col justify-between gap-8 border border-black bg-white p-6 transition-colors hover:border-eccentric-blue" data-reveal>
                             <div class="flex flex-col gap-4">
                                 <div class="flex items-center justify-between border-b border-black/10 pb-3">
-                                    <span @class([
-                                        $label,
-                                        'font-bold text-eccentric-blue' => $solution['featured'] ?? false,
-                                        'font-bold transition-colors group-hover:text-eccentric-blue' => ! ($solution['featured'] ?? false),
-                                    ])>{{ $solution['tag'] }}</span>
-                                    <svg @class([
-                                        'size-5 transition-colors',
-                                        'text-eccentric-blue' => $solution['featured'] ?? false,
-                                        'group-hover:text-eccentric-blue' => ! ($solution['featured'] ?? false),
-                                    ]) viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="{{ $solution['icon'] }}"/></svg>
+                                    <span class="{{ $label }} font-bold transition-colors group-hover:text-eccentric-blue">{{ $solution['tag'] }}</span>
+                                    <svg class="size-5 transition-colors group-hover:text-eccentric-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="{{ $solution['icon'] }}"/></svg>
                                 </div>
                                 <h3 class="text-2xl leading-8 tracking-tight uppercase">{{ $solution['title'] }}</h3>
                                 <p class="text-sm leading-relaxed text-[#808080]">{{ $solution['text'] }}</p>
