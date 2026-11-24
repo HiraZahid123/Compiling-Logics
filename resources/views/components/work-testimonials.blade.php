@@ -8,13 +8,24 @@
      */
     $client = ['name' => 'Client Name', 'country' => 'Role, Company', 'initials' => 'CN', 'project' => 'Project name', 'placeholder' => true];
 
-    $testimonials = [
+    $videos = [
         [...$client, 'type' => 'video', 'video' => '', 'poster' => null, 'duration' => '02:14'],
-        [...$client, 'type' => 'written', 'quote' => 'Replace this with your client’s own words. One or two sentences about the result they got, in their voice, work best.'],
-        [...$client, 'type' => 'written', 'quote' => 'Replace this with your client’s own words. One or two sentences about the result they got, in their voice, work best.'],
         [...$client, 'type' => 'video', 'video' => '', 'poster' => null, 'duration' => '01:32'],
-        [...$client, 'type' => 'written', 'quote' => 'Replace this with your client’s own words. One or two sentences about the result they got, in their voice, work best.'],
     ];
+
+    /* Written client reviews, strongest first: the first three lead the grid. */
+    $reviews = array_map(fn (array $review): array => ['type' => 'written', ...$review], [
+        ['name' => 'Lou', 'country' => 'USA', 'quote' => 'Hira is one of the strongest freelancers I’ve worked with. She moves quickly, understands the objective without over-explanation, and consistently delivers high-quality work. Communication is clear, timelines are met, and she steps up when things get complex. She also improves what you ask for, not just executes it. Most importantly, she’s reliable. When she commits to something, it gets done.'],
+        ['name' => 'Aya', 'country' => 'France', 'quote' => 'Excellent experience working with Hira and her team. They were professional, responsive, reliable, and easy to communicate with throughout the project. The quality of their work was excellent, and everything was handled with great attention to detail. I really appreciated their dedication and professionalism. Highly recommended, and I would be very happy to work with them again!'],
+        ['name' => 'Amanda', 'country' => 'Australia', 'quote' => 'Hira and her team were wonderful to work with and the project was completed to my (fairly exacting!) standards on time with no issues whatsoever. I recommend Hira without reservation.'],
+        ['name' => 'Pawal', 'country' => 'Poland', 'quote' => 'It was a pleasure working with Hira on the first milestone of my project. She demonstrated professionalism, technical expertise, and a strong understanding of the project requirements. Communication was clear, and the collaboration went smoothly. I’m very satisfied with our cooperation and look forward to working with her on the next stages of the project. Highly recommended!'],
+        ['name' => 'Salma', 'country' => 'Egypt', 'quote' => 'Hira is truly exceptional. This is not my first time working with her, and whenever I have a new project, she is always the first person I reach out to. She is reliable, responsive, accountable, and consistently delivers great work. It is always a pleasure working with her, and I highly recommend her!'],
+        ['name' => 'Eduardo', 'country' => 'USA', 'quote' => 'Hira is a top performer. Exceptional programmer with sharp problem-solving skills and clean, efficient code. A true asset to any dev team, highly recommended! She has great communication skills and solves issues promptly. Would definitely hire her again!'],
+        ['name' => 'Tolu', 'country' => 'UK', 'quote' => 'Hira is an excellent developer, who takes time and effort to understand and complete the work. Hira is committed to excellence to all aspects of the job. I thoroughly enjoyed working with Hira.'],
+        ['name' => 'Libby', 'country' => 'USA', 'quote' => 'Hira is an outstanding Senior Full-Stack AI Developer with strong expertise in the MERN stack, Python, and AI technologies. She consistently delivered high-quality work across frontend, backend, and AI development, building intelligent and scalable solutions. She is highly skilled at solving complex problems, designing efficient systems, and implementing AI-driven features. Communication was always smooth, and she consistently went above and beyond expectations to deliver exceptional results. I highly recommend Hira to any organization looking for a talented Full-Stack AI Engineer who can transform ideas into outstanding, production-ready products.'],
+    ]);
+
+    $testimonials = [$videos[0], $reviews[0], $reviews[1], $videos[1], ...array_slice($reviews, 2)];
     $lastRowStart = 2 + intdiv(count($testimonials) - 2, 3) * 3;
 @endphp
 

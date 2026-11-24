@@ -62,13 +62,14 @@ it('posts the project form to the contact handler and returns to it', function (
         ->not->toContain('method="GET"');
 });
 
-it('shows placeholder testimonials in the design layout until real ones are added', function () {
+it('shows the written client reviews alongside the video testimonials, strongest first', function () {
     $html = $this->get(route('work'))->assertSee('What clients say.')->getContent();
 
-    expect(substr_count($html, 'data-testimonial-type="written"'))->toBe(3)
+    expect(substr_count($html, 'data-testimonial-type="written"'))->toBe(8)
         ->and(substr_count($html, 'data-testimonial-type="video"'))->toBe(2)
         ->and(substr_count($html, 'data-testimonial-filter='))->toBe(3)
-        ->and(substr_count($html, '>Placeholder</span>'))->toBe(5)
-        ->and($html)->toContain('data-testimonial-modal')
-        ->not->toContain('Pawal');
+        ->and(substr_count($html, '>Placeholder</span>'))->toBe(2)
+        ->and($html)->toContain('data-testimonial-modal');
+
+    $this->get(route('work'))->assertSeeInOrder(['Lou', 'Aya', 'Amanda', 'Pawal', 'Salma', 'Eduardo', 'Tolu', 'Libby']);
 });
