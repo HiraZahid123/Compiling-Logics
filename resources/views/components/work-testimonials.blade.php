@@ -76,7 +76,7 @@
                         @else
                             <div class="flex flex-1 flex-col p-6 sm:p-9">
                                 <svg class="mb-6 h-[30px] w-11 shrink-0 fill-none stroke-black stroke-[1.6]" viewBox="0 0 48 32" aria-hidden="true"><path d="M2 2h18v14l-8 14H4l6-12H2zM28 2h18v14l-8 14h-8l6-12h-8z"/></svg>
-                                <blockquote @class(['m-0 mb-8', 'text-2xl leading-[1.45]' => $isBig, 'text-lg leading-[1.55]' => ! $isBig])>{{ $testimonial['quote'] }}</blockquote>
+                                <blockquote class="m-0 mb-8 text-lg leading-[1.55]">{{ $testimonial['quote'] }}</blockquote>
                                 <figcaption class="mt-auto flex items-center gap-3.5 border-t border-black/14 pt-5">
                         @endif
                                 <span class="grid size-12 shrink-0 place-items-center border border-black text-[15px] tracking-[0.05em]" aria-hidden="true">{{ $testimonial['initials'] ?? mb_substr($testimonial['name'], 0, 1) }}</span>
