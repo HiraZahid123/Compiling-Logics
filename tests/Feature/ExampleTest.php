@@ -8,7 +8,7 @@ it('returns a successful response', function () {
 
 it('renders the new home page sections with working links', function () {
     $this->get('/')
-        ->assertSeeInOrder(['Where the logics never prank.', 'Engineered Solutions Matrix', 'Industry Transformation Showcase', 'The Engineering Philosophy', 'manual computational friction'], escape: false)
+        ->assertSeeInOrder(['WHERE THE LOGICS NEVER PRANK.', 'OUR SOLUTIONS AT A GLANCE', 'Industry Transformation Showcase', 'The Engineering Philosophy', 'manual computational friction'], escape: false)
         ->assertSee('href="'.route('services').'#ai-agents-automation"', escape: false)
         ->assertSee('href="'.route('work').'"', escape: false)
         ->assertSee('href="'.route('contact').'"', escape: false);

@@ -25,8 +25,8 @@
     <div class="mx-auto max-w-7xl px-6 pt-16 pb-24 lg:px-12 lg:pb-12">
         <div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
             <div class="flex w-fit flex-col gap-4">
-                <a href="{{ route('home') }}" class="block w-fit" aria-label="Compiling Logics home">
-                    <img src="{{ asset('images/logo-footer.webp') }}" alt="Compiling Logics" class="block h-11 w-auto" width="196" height="48" loading="lazy">
+                <a href="{{ route('home') }}" class="block w-0 min-w-full" aria-label="Compiling Logics home">
+                    <img src="{{ asset('images/logo-footer.webp') }}" alt="Compiling Logics" class="block h-auto w-full" width="196" height="48" loading="lazy">
                 </a>
                 <div class="text-xs tracking-widest text-eccentric-blue uppercase">Where the logics never prank</div>
                 <p class="w-0 min-w-full text-sm leading-relaxed text-[#808080]">Deterministic enterprise AI systems, high-integrity workflow automation, and fault-tolerant infrastructure built for healthcare, hospitality, and critical operations.</p>

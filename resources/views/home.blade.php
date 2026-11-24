@@ -1,21 +1,21 @@
 @extends('layouts.site')
 
 @section('title', 'Compiling Logics — Engineered Digital Systems')
-@section('description', '24/7 AI agents, workflow automation and resilient custom software that free enterprises from manual friction in healthcare, real estate and hospitality.')
+@section('description', 'Web and mobile app development, UI/UX and DevOps. We design, build, debug and deploy custom applications for startups and growing businesses.')
 
 @php
     $telemetry = [
-        ['value' => '99.98%', 'label' => 'Automation Uptime', 'text' => 'Continuous deterministic operations without fallback dropouts.'],
-        ['value' => '< 120ms', 'label' => 'Model Latency', 'text' => 'Near-instantaneous inference validation on edge clusters.'],
-        ['value' => '$4.2M+', 'label' => 'Overhead Eliminated', 'text' => 'Cumulative labor friction reclaimed across deployed client systems.'],
-        ['value' => '24/7', 'label' => 'Global Timezone Ops', 'text' => 'Uninterrupted mission availability across EMEA, US, and APAC.'],
+        ['tag' => 'RELIABILITY', 'value' => '99.98%', 'label' => 'ALWAYS WORKING', 'text' => 'Our systems stay up and running almost all the time, with no unexpected breaks.'],
+        ['tag' => 'SPEED', 'value' => '< 120ms', 'label' => 'INSTANT RESPONSES', 'text' => 'Answers come back in a fraction of a second, faster than a blink.'],
+        ['tag' => 'SAVINGS', 'value' => '$4.2M+', 'label' => 'COSTS SAVED', 'text' => 'Money our clients have saved by cutting out repetitive manual work.'],
+        ['tag' => 'COVERAGE', 'value' => '24/7', 'label' => 'ALWAYS AVAILABLE', 'text' => 'Open around the clock across Europe, the Middle East, Africa, the US, and Asia-Pacific.'],
     ];
 
     $solutions = [
-        ['tag' => '01 // Automation', 'title' => 'Intelligent AI Agents', 'text' => 'Autonomous multi-agent orchestration, LLM synthesis, and continuous 24/7 operational tasking built with non-drifting guardrails.', 'status' => 'Dispatch capable', 'url' => route('services').'#ai-agents-automation', 'icon' => 'M5 9h14v10H5zM12 4v5M9 13h1M14 13h1M9 16h6'],
-        ['tag' => '02 // Orchestration', 'title' => 'End-to-End Workflow Automation', 'text' => 'Eliminating repetitive friction across legacy ERPs, internal databases, and modern APIs with guaranteed zero-failure message queues.', 'status' => 'Pipeline verified', 'url' => route('services').'#ai-agents-automation', 'icon' => 'M4 4h6v6H4zM14 14h6v6h-6zM10 7h4v10'],
-        ['tag' => '03 // Architecture', 'title' => 'Mission-Critical Custom Software', 'text' => 'Next-generation web and cloud applications built with type-safe precision, microsecond response bounds, and unyielding scalability.', 'status' => 'Deterministic build', 'url' => route('services').'#software-development', 'icon' => 'M3 4h18v16H3zM7 9l3 3-3 3M12 15h5'],
-        ['tag' => '04 // Protocols', 'title' => 'Specialized Industry Frameworks', 'text' => 'Pre-compiled compliance engines structured directly for Healthcare HIPAA, Real Estate MLS protocols, and Hospitality real-time POS systems.', 'status' => 'Compliance locked', 'url' => route('services').'#quality-assurance', 'icon' => 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM8.5 12l2.5 2.5 4.5-5'],
+        ['tag' => '01 // AI ASSISTANTS', 'title' => 'SMART AI ASSISTANTS', 'text' => 'AI helpers that handle everyday tasks for you, around the clock, while staying within the rules you set.', 'status' => 'READY TO WORK', 'url' => route('services').'#ai-agents-automation', 'icon' => 'M5 9h14v10H5zM12 4v5M9 13h1M14 13h1M9 16h6'],
+        ['tag' => '02 // AUTOMATION', 'title' => 'WORKFLOWS ON AUTOPILOT', 'text' => 'We remove repetitive manual work by connecting your older systems, databases, and apps, so nothing gets lost or dropped.', 'status' => 'TESTED AND PROVEN', 'url' => route('services').'#ai-agents-automation', 'icon' => 'M4 4h6v6H4zM14 14h6v6h-6zM10 7h4v10'],
+        ['tag' => '03 // CUSTOM BUILDS', 'title' => 'CUSTOM SOFTWARE YOU CAN RELY ON', 'text' => 'Modern websites and cloud apps that are fast, dependable, and ready to grow along with your business.', 'status' => 'BUILT TO LAST', 'url' => route('services').'#software-development', 'icon' => 'M3 4h18v16H3zM7 9l3 3-3 3M13 15h4', 'featured' => true],
+        ['tag' => '04 // INDUSTRIES', 'title' => 'BUILT FOR YOUR INDUSTRY', 'text' => 'Ready-made solutions that meet the rules of your field, such as healthcare privacy (HIPAA), real estate listings, and restaurant and hotel checkout systems.', 'status' => 'RULES BUILT IN', 'url' => route('services').'#quality-assurance', 'icon' => 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM8.5 12l2.5 2.5 4.5-5'],
     ];
 
     $industries = [
@@ -33,9 +33,9 @@
     ];
 
     $topology = [
-        ['step' => '01. Ingestion layer', 'title' => 'Data Ingestion Engine', 'text' => 'Multi-source telemetry, EHR streams, MLS live listings, API hooks'],
-        ['step' => '02. Core reasoning', 'title' => 'Compiling Logics Engine', 'text' => 'Deterministic state evaluation, schema validation, non-hallucinatory parsing', 'core' => true],
-        ['step' => '03. Execution dispatch', 'title' => 'Real-Time Action Array', 'text' => 'HIPAA compliance audits, reservation updates, autonomous outreach'],
+        ['step' => '01. SHARE YOUR IDEA', 'title' => 'WE UNDERSTAND YOUR NEEDS', 'text' => 'Tell us your goals, your users and any existing systems or apps. We review everything and suggest the best approach.'],
+        ['step' => '02. WE BUILD IT', 'badge' => 'OUR CORE WORK', 'title' => 'DESIGN, DEVELOPMENT & TESTING', 'text' => 'Our team designs the screens, builds your web or mobile app and tests every feature before launch.', 'footerLeft' => 'Weekly progress updates', 'footerRight' => 'Fixed-scope pricing', 'core' => true],
+        ['step' => '03. WE LAUNCH & SUPPORT', 'title' => 'GO LIVE WITH CONFIDENCE', 'text' => 'We deploy your product, monitor it around the clock and keep it secure, fast and up to date.'],
     ];
 
     $label = 'text-[10px] leading-[0.875rem] tracking-[0.12em] uppercase';
@@ -55,34 +55,34 @@
                 <div class="flex flex-wrap items-center justify-between gap-4 border-b border-black pb-4">
                     <div class="flex items-center gap-3">
                         <span class="inline-block size-2.5 bg-eccentric-blue"></span>
-                        <span class="{{ $label }}">Enterprise digital transformation // 24/7 autonomous logic</span>
+                        <span class="{{ $label }}">WEB, MOBILE &amp; CLOUD SOLUTIONS // AVAILABLE 24/7</span>
                     </div>
                     <div class="{{ $label }} hidden items-center gap-4 text-[#808080] md:flex">
-                        <span>Spec_v1.0</span><span>Deterministic_runtime: active</span><span class="font-bold text-eccentric-blue">Node_01//sys_stable</span>
+                        <span>ONLINE NOW</span><span>FAST RESPONSE</span><span class="font-bold text-eccentric-blue">SYSTEMS STABLE</span>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 items-start gap-12 lg:grid-cols-12 lg:gap-8">
                     <div class="flex flex-col gap-8 lg:col-span-7">
                         <div class="flex flex-col gap-4">
-                            <div class="inline-flex w-fit items-center border border-black/10 bg-[#f5f5f7] px-3 py-1"><span class="{{ $label }}">Core architecture manifesto</span></div>
-                            <h1 id="home-heading" class="text-[2.5rem] leading-[3rem] tracking-tight uppercase lg:text-5xl lg:leading-[1.1]">Where the logics never prank.<br><span class="text-eccentric-blue">Engineered digital systems</span> for global scale.</h1>
-                            <p class="max-w-2xl text-lg leading-[1.6] text-[#808080]">We free ambitious enterprises from manual friction by delivering 24/7 accessible AI agents, automated workflow orchestration, and resilient custom architectures across Healthcare, Real Estate, and Hospitality.</p>
+                            <div class="inline-flex w-fit items-center border border-black/10 bg-[#f5f5f7] px-3 py-1"><span class="{{ $label }}">SOFTWARE DEVELOPMENT COMPANY</span></div>
+                            <h1 id="home-heading" class="text-[2.5rem] leading-[3rem] tracking-tight uppercase lg:text-5xl lg:leading-[1.1]">WEB &amp; MOBILE APP DEVELOPMENT, UI/UX AND DEVOPS. <span class="text-eccentric-blue">WHERE THE LOGICS NEVER PRANK.</span></h1>
+                            <p class="max-w-2xl text-lg leading-[1.6] text-[#808080]">We design, build, debug and deploy custom web and mobile applications for startups and growing businesses. One team owns the whole lifecycle, from the first wireframe to a monitored production release.</p>
                         </div>
                         <div class="flex flex-wrap items-center gap-4 pt-2">
-                            <a href="#evaluation" class="{{ $primaryButton }}">Launch System Evaluation</a>
-                            <a href="{{ route('work') }}" class="{{ $secondaryButton }}">Inspect Architectural Portfolio</a>
+                            <a href="{{ route('contact') }}" class="{{ $primaryButton }}">GET A FREE CONSULTATION</a>
+                            <a href="{{ route('work') }}" class="{{ $secondaryButton }}">VIEW OUR WORK</a>
                         </div>
                         <div class="flex flex-col gap-2 border border-black/15 bg-[#f5f5f7] p-4 {{ $label }}">
-                            <div class="flex items-center justify-between border-b border-black/10 pb-2 text-[#808080]"><span>Terminal stream: runtime_logger</span><span class="animate-pulse text-eccentric-blue">● Broadcasting</span></div>
-                            <div class="flex items-center gap-3"><span class="text-eccentric-blue">&gt;&gt;</span><span>Verifying state integrity: zero guesswork tolerance detected. Ready for deployment.</span></div>
+                            <div class="flex items-center justify-between border-b border-black/10 pb-2 text-[#808080]"><span>PROJECT STATUS</span><span class="flex items-center gap-1.5 font-bold text-eccentric-blue"><span class="size-2 rounded-full bg-eccentric-blue"></span> ACTIVE</span></div>
+                            <div class="flex items-center gap-3"><span class="text-eccentric-blue">&gt;&gt;</span><span>YOUR PROJECT IS ON TRACK AND READY TO LAUNCH.</span></div>
                         </div>
                     </div>
 
                     <div class="relative flex flex-col justify-between border-2 border-black bg-white p-6 shadow-[4px_4px_0_0_#000] lg:col-span-5">
                         <div class="mb-6 flex items-center justify-between border-b border-black pb-4">
-                            <div class="text-xs font-bold tracking-widest uppercase">Logic topology map // Level-0</div>
-                            <span class="border border-eccentric-blue px-2 py-0.5 text-[10px] font-bold text-eccentric-blue">LIVE FLOW</span>
+                            <div class="text-xs font-bold tracking-widest uppercase">HOW WE WORK</div>
+                            <span class="border border-eccentric-blue px-2 py-0.5 text-[10px] font-bold text-eccentric-blue">SIMPLE 3-STEP PROCESS</span>
                         </div>
                         <div class="flex flex-col gap-4 py-2">
                             @foreach ($topology as $node)
@@ -93,7 +93,7 @@
                                     <div class="mb-1 flex items-center justify-between">
                                         <span @class([$label, 'font-bold text-eccentric-blue' => $node['core'] ?? false, 'text-[#808080]' => ! ($node['core'] ?? false)])>{{ $node['step'] }}</span>
                                         @if ($node['core'] ?? false)
-                                            <span class="bg-eccentric-blue px-1.5 text-[9px] text-white uppercase">Zero prank core</span>
+                                            <span class="bg-eccentric-blue px-1.5 py-0.5 text-[9px] font-bold text-white uppercase">{{ $node['badge'] }}</span>
                                         @else
                                             <span class="size-2 bg-eccentric-blue"></span>
                                         @endif
@@ -101,19 +101,19 @@
                                     <div class="text-xl leading-7 font-bold uppercase">{{ $node['title'] }}</div>
                                     <div @class(['text-sm', 'text-black' => $node['core'] ?? false, 'text-[#808080]' => ! ($node['core'] ?? false)])>{{ $node['text'] }}</div>
                                     @if ($node['core'] ?? false)
-                                        <div class="mt-2 flex justify-between border-t border-black/10 pt-2 text-[10px] text-[#808080]"><span>LATENCY: 0.04ms</span><span class="text-eccentric-blue">CONCURRENCY: 10K OPS/SEC</span></div>
+                                        <div class="mt-2 flex justify-between border-t border-black/10 pt-2 text-[10px] text-[#808080]"><span>{{ $node['footerLeft'] }}</span><span class="font-bold text-eccentric-blue">{{ $node['footerRight'] }}</span></div>
                                     @endif
                                 </div>
                             @endforeach
                         </div>
-                        <div class="mt-6 flex items-center justify-between border-t border-black pt-4 {{ $label }} text-[#808080]"><span>Signal status: continuous</span><span class="font-bold text-black">Recursion: negative</span></div>
+                        <div class="mt-6 flex items-center justify-between border-t border-black pt-4 {{ $label }} text-[#808080]"><span>STATUS: ALWAYS AVAILABLE</span><span class="font-bold text-black">SUPPORT: 24/7</span></div>
                     </div>
                 </div>
 
                 <div class="mt-8 grid grid-cols-1 border-t border-l border-black md:grid-cols-2 lg:grid-cols-4">
                     @foreach ($telemetry as $stat)
                         <div class="flex flex-col justify-between gap-4 border-r border-b border-black bg-white p-6">
-                            <div class="flex items-start justify-between"><span class="{{ $label }} text-[#808080]">Telemetry_{{ sprintf('%02d', $loop->iteration) }}</span><span class="size-2 bg-eccentric-blue"></span></div>
+                            <div class="flex items-start justify-between"><span class="{{ $label }} text-[#808080]">{{ $stat['tag'] }}</span><span class="size-2 bg-eccentric-blue"></span></div>
                             <div>
                                 <div class="text-[40px] leading-tight font-bold">{{ $stat['value'] }}</div>
                                 <div class="mt-1 text-xs tracking-[0.08em] uppercase">{{ $stat['label'] }}</div>
@@ -130,19 +130,31 @@
             <div class="mx-auto flex max-w-7xl flex-col gap-12">
                 <div class="flex flex-col justify-between gap-6 border-b border-black pb-6 md:flex-row md:items-end">
                     <div>
-                        <span class="{{ $label }} mb-2 block font-bold text-eccentric-blue">Disciplined digital craft // Modular stack</span>
-                        <h2 id="matrix-heading" class="text-[2.25rem] leading-[2.75rem] tracking-tight uppercase">Engineered Solutions Matrix</h2>
+                        <span class="{{ $label }} mb-2 block font-bold text-eccentric-blue">WHAT WE BUILD // OUR SERVICES</span>
+                        <h2 id="matrix-heading" class="text-[2.25rem] leading-[2.75rem] tracking-tight uppercase">OUR SOLUTIONS AT A GLANCE</h2>
                     </div>
-                    <p class="max-w-md text-sm text-[#808080]">High-integrity components built with absolute modularity. Every solution is pre-validated to integrate cleanly into active operational architectures.</p>
+                    <p class="max-w-md text-sm text-[#808080]">Reliable tools designed to work together. Each one is tested in advance, so it fits smoothly into the way your business already runs.</p>
                 </div>
 
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
                     @foreach ($solutions as $solution)
-                        <a href="{{ $solution['url'] }}" class="group flex flex-col justify-between gap-8 border border-black bg-white p-6 transition-colors hover:border-eccentric-blue" data-reveal>
+                        <a href="{{ $solution['url'] }}" @class([
+                            'group flex flex-col justify-between gap-8 bg-white p-6 transition-colors',
+                            'border-2 border-eccentric-blue' => $solution['featured'] ?? false,
+                            'border border-black hover:border-eccentric-blue' => ! ($solution['featured'] ?? false),
+                        ]) data-reveal>
                             <div class="flex flex-col gap-4">
                                 <div class="flex items-center justify-between border-b border-black/10 pb-3">
-                                    <span class="{{ $label }} font-bold transition-colors group-hover:text-eccentric-blue">{{ $solution['tag'] }}</span>
-                                    <svg class="size-5 transition-colors group-hover:text-eccentric-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="{{ $solution['icon'] }}"/></svg>
+                                    <span @class([
+                                        $label,
+                                        'font-bold text-eccentric-blue' => $solution['featured'] ?? false,
+                                        'font-bold transition-colors group-hover:text-eccentric-blue' => ! ($solution['featured'] ?? false),
+                                    ])>{{ $solution['tag'] }}</span>
+                                    <svg @class([
+                                        'size-5 transition-colors',
+                                        'text-eccentric-blue' => $solution['featured'] ?? false,
+                                        'group-hover:text-eccentric-blue' => ! ($solution['featured'] ?? false),
+                                    ]) viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="{{ $solution['icon'] }}"/></svg>
                                 </div>
                                 <h3 class="text-2xl leading-8 tracking-tight uppercase">{{ $solution['title'] }}</h3>
                                 <p class="text-sm leading-relaxed text-[#808080]">{{ $solution['text'] }}</p>
@@ -153,8 +165,8 @@
                 </div>
 
                 <div class="flex flex-wrap items-center justify-between gap-4 pt-4">
-                    <a href="{{ route('services') }}" class="group inline-flex items-center gap-3 text-xs tracking-[0.08em] uppercase transition-colors hover:text-eccentric-blue"><span>Explore All System Services</span><span class="text-eccentric-blue transition-transform group-hover:translate-x-1">-&gt;</span></a>
-                    <span class="{{ $label }} text-[#808080]">Index reference // Matrix_sec_02</span>
+                    <a href="{{ route('services') }}" class="group inline-flex items-center gap-3 text-xs tracking-[0.08em] uppercase transition-colors hover:text-eccentric-blue"><span>SEE ALL OUR SERVICES</span><span class="text-eccentric-blue transition-transform group-hover:translate-x-1">-&gt;</span></a>
+                    <span class="{{ $label }} text-[#808080]">SECTION 02 // OUR SERVICES</span>
                 </div>
             </div>
         </section>
