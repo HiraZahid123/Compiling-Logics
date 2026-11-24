@@ -61,7 +61,7 @@
                 ]) data-testimonial-type="{{ $testimonial['type'] }}" data-reveal>
                     <figure class="relative m-0 flex h-full flex-col border border-black/14 bg-white transition duration-300 hover:-translate-y-1 hover:border-black hover:shadow-[0_20px_40px_rgba(0,0,0,0.10)]">
                         @if ($testimonial['type'] === 'video')
-                            <button type="button" class="testimonial-poster group relative block aspect-video w-full cursor-pointer overflow-hidden border-b border-black" data-testimonial-video="{{ $testimonial['video'] }}" data-testimonial-title="{{ $testimonial['name'] }}" aria-label="Play video testimonial from {{ $testimonial['name'] }}">
+                            <button type="button" class="testimonial-poster group relative block aspect-video w-full grow cursor-pointer overflow-hidden border-b border-black" data-testimonial-video="{{ $testimonial['video'] }}" data-testimonial-title="{{ $testimonial['name'] }}" aria-label="Play video testimonial from {{ $testimonial['name'] }}">
                                 @if ($testimonial['poster'])
                                     <img src="{{ asset($testimonial['poster']) }}" alt="" class="absolute inset-0 size-full object-cover" loading="lazy">
                                 @else
@@ -72,7 +72,7 @@
                                     <svg @class(['ml-1', 'size-[38px]' => $isBig, 'size-7' => ! $isBig]) viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
                                 </span>
                             </button>
-                            <figcaption class="mt-auto flex items-center gap-3.5 px-6 pt-5 pb-7">
+                            <figcaption class="flex items-center gap-3.5 px-6 pt-5 pb-6 sm:px-9 sm:pb-9">
                         @else
                             <div class="flex flex-1 flex-col p-6 sm:p-9">
                                 <svg class="mb-6 h-[30px] w-11 shrink-0 fill-none stroke-black stroke-[1.6]" viewBox="0 0 48 32" aria-hidden="true"><path d="M2 2h18v14l-8 14H4l6-12H2zM28 2h18v14l-8 14h-8l6-12h-8z"/></svg>
