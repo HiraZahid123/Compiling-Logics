@@ -251,24 +251,24 @@
 <!-- Channel 1 -->
 <div class="p-3 bg-gray-subtle border border-deep-black/10 hover:border-eccentric-blue transition-colors group">
 <div class="font-label-sm text-label-sm uppercase text-technical-gray tracking-wider">Enterprise Inquiries &amp; Architect Consultation</div>
-<a class="font-body-lg text-body-lg text-deep-black group-hover:text-eccentric-blue transition-colors font-medium flex items-center justify-between mt-1" href="mailto:enterprise@compilinglogics.com">
-<span>enterprise@compilinglogics.com</span>
+<a class="font-body-lg text-body-lg text-deep-black group-hover:text-eccentric-blue transition-colors font-medium flex items-center justify-between mt-1" href="mailto:info@compilinglogics.com">
+<span class="break-all">info@compilinglogics.com</span>
 <svg class="size-[18px] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10"></svg>
 </a>
 </div>
 <!-- Channel 2 -->
 <div class="p-3 bg-gray-subtle border border-deep-black/10 hover:border-eccentric-blue transition-colors group">
 <div class="font-label-sm text-label-sm uppercase text-technical-gray tracking-wider">24/7 Technical Support Desk</div>
-<a class="font-body-lg text-body-lg text-deep-black group-hover:text-eccentric-blue transition-colors font-medium flex items-center justify-between mt-1" href="mailto:support@compilinglogics.com">
-<span>support@compilinglogics.com</span>
+<a class="font-body-lg text-body-lg text-deep-black group-hover:text-eccentric-blue transition-colors font-medium flex items-center justify-between mt-1" href="mailto:compiling.logics@gmail.com">
+<span class="break-all">compiling.logics@gmail.com</span>
 <svg class="size-[18px] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10"></svg>
 </a>
 </div>
 <!-- Channel 3 -->
 <div class="p-3 bg-gray-subtle border border-deep-black/10 hover:border-eccentric-blue transition-colors group">
 <div class="font-label-sm text-label-sm uppercase text-technical-gray tracking-wider">Brand Guardian &amp; Press Operations</div>
-<a class="font-body-lg text-body-lg text-deep-black group-hover:text-eccentric-blue transition-colors font-medium flex items-center justify-between mt-1" href="mailto:press@compilinglogics.com">
-<span>press@compilinglogics.com</span>
+<a class="font-body-lg text-body-lg text-deep-black group-hover:text-eccentric-blue transition-colors font-medium flex items-center justify-between mt-1" href="mailto:hira_zahid123@hotmail.com">
+<span class="break-all">hira_zahid123@hotmail.com</span>
 <svg class="size-[18px] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10"></svg>
 </a>
 </div>

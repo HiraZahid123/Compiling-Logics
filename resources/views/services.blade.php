@@ -84,7 +84,7 @@
             <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#ececf0_1px,transparent_1px),linear-gradient(to_bottom,#ececf0_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-60" aria-hidden="true"></div>
 
             <div class="relative mx-auto grid max-w-7xl grid-cols-1 items-end gap-10 lg:grid-cols-12 lg:gap-12">
-                <div class="flex flex-col gap-6 lg:col-span-7">
+                <div class="flex flex-col gap-6 lg:col-span-6">
                     <div class="flex flex-wrap items-center gap-3">
                         <span class="size-2.5 bg-eccentric-blue"></span>
                         <span class="{{ $label }} bg-[#f5f5f7] px-3 py-1">Services // 06 pillars</span>
@@ -107,19 +107,19 @@
                     </div>
                 </div>
 
-                <nav class="flex flex-col gap-4 bg-[#f5f5f7] p-6 shadow-sm lg:col-span-5" aria-label="The six pillars">
-                    <div class="flex items-center justify-between gap-3 bg-[#e9e9ee] px-4 py-2">
+                <nav class="flex flex-col gap-5 bg-[#f5f5f7] p-6 shadow-sm sm:p-8 lg:col-span-6" aria-label="The six pillars">
+                    <div class="flex items-center justify-between gap-3 bg-[#e9e9ee] px-5 py-3">
                         <span class="{{ $label }}">Pillar index</span>
                         <span class="{{ $label }} inline-flex items-center gap-1.5 text-eccentric-blue"><span class="size-1.5 animate-pulse bg-eccentric-blue"></span>06 active</span>
                     </div>
 
-                    <ul class="grid gap-2 sm:grid-cols-2">
+                    <ul class="grid gap-3 sm:grid-cols-2">
                         @foreach ($pillars as $item)
                             <li>
-                                <a href="#{{ $item['id'] }}" class="group flex h-full items-center gap-3 bg-white p-3.5 transition-colors hover:bg-black hover:text-white focus-visible:bg-black focus-visible:text-white">
+                                <a href="#{{ $item['id'] }}" class="group flex h-full min-h-20 items-center gap-4 bg-white px-5 py-5 transition-colors hover:bg-black hover:text-white focus-visible:bg-black focus-visible:text-white">
                                     <span class="{{ $label }} {{ $muted }} group-hover:text-white/60">{{ $number($loop->iteration) }}</span>
-                                    <span class="flex-1 text-sm leading-snug uppercase">{{ $item['title'] }}</span>
-                                    <span class="text-eccentric-blue group-hover:text-white">{!! $svg($item['icon'], 'size-[18px]') !!}</span>
+                                    <span class="flex-1 text-base leading-snug uppercase">{{ $item['title'] }}</span>
+                                    <span class="text-eccentric-blue group-hover:text-white">{!! $svg($item['icon'], 'size-[22px]') !!}</span>
                                 </a>
                             </li>
                         @endforeach
